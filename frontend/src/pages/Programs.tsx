@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import ssisApi from "../api/ssisApi";
+import type { Program } from "../types/types";
 
 function Programs() {
-    const [programs, setPrograms] = useState<string[]>([]);
+    const [programs, setPrograms] = useState<Program[]>([]);
 
     useEffect(() => {
         const fetchPrograms = async () => {
@@ -19,11 +20,26 @@ function Programs() {
             {programs.length === 0 ? (
                 <div>empty</div>
             ) : (
-                <div>
-                    {programs.map((p) => {
-                        return <div key={p}>{p}</div>;
-                    })}
-                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>college</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {programs.map((p) => {
+                            return (
+                                <tr key={p.id}>
+                                    <td>{p.id}</td>
+                                    <td>{p.name}</td>
+                                    <td>{p.college}</td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             )}
         </div>
     );

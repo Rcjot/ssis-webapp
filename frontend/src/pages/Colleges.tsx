@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import ssisApi from "../api/ssisApi";
+import type { College } from "../types/types";
 
 function Colleges() {
-    const [colleges, setColleges] = useState<string[]>([]);
+    const [colleges, setColleges] = useState<College[]>([]);
 
     useEffect(() => {
         const fetchColleges = async () => {
@@ -14,18 +15,24 @@ function Colleges() {
     }, []);
 
     return (
-        <div>
-            <h1>Colleges</h1>
-            {colleges.length === 0 ? (
-                <div>empty</div>
-            ) : (
-                <div>
-                    {colleges.map((c) => {
-                        return <div key={c}>{c}</div>;
-                    })}
-                </div>
-            )}
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {colleges.map((c) => {
+                    return (
+                        <tr key={c.id}>
+                            <td>{c.id}</td>
+                            <td>{c.name}</td>
+                        </tr>
+                    );
+                })}
+            </tbody>
+        </table>
     );
 }
 
