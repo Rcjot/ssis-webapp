@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../Layouts/Layout";
 import Home from "../pages/Home";
 import Students from "../pages/Students";
 import Programs from "../pages/Programs";

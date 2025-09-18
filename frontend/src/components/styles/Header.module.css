@@ -1,0 +1,13 @@
+header {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    justify-content: space-between;
+    padding: 12px;
+}
+
+header > div {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+}
