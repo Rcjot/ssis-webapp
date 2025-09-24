@@ -8,6 +8,8 @@ flask = "*"
 flask-cors = "*"
 python-dotenv = "*"
 psycopg2 = "*"
+flask-login = "*"
+flask-wtf = "*"
 
 [dev-packages]
 

@@ -4,6 +4,7 @@ import os
 
 def get_db():
     if 'db' not in g: 
+        print(current_app.config['DATABASE_URL'])
         g.db = psycopg2.connect(current_app.config['DATABASE_URL'])
     return g.db
 
@@ -14,3 +15,4 @@ def close_db(e=None) :
 
 def init_app(app):
     app.teardown_appcontext(close_db)
+
