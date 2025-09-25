@@ -29,7 +29,7 @@ function getRoutes() {
                 {
                     element: <ProtectedRoute />,
                     children: [
-                        { path: "/", element: <Home /> },
+                        { path: "/home", element: <Home /> },
                         {
                             path: "/students",
                             element: <Students />,

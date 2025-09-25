@@ -12,24 +12,25 @@ def add_user() :
     user.add()
     return({"successful": True})
 
-@user_bp.route("register", methods=["POST"])
-def register_user() :
+@user_bp.route("/signup", methods=["POST"])
+def signup_user() :
     data = request.get_json()
     # form = UserForm(request.form)
     form = UserForm(data=data)
     # print(form.username, form.password, form.email, form.csrf_token.data)
     if form.validate() :
         new_user = Users(username=form.username.data, password=form.password.data, email=form.email.data)
+        
         new_user.add()
 
         return jsonify(success=True)
     
     return jsonify(success=False,
-                   message="Something went wrong registering",
-                   error = {"usernameError" :form.username.errors, 
-                            "emailError" : form.email.errors, 
-                            "passwordError" : form.password.errors, 
-                            "confirmError" : form.confirm.errors}
+                   message="Something went wrong signup",
+                   error = {"username" :form.username.errors, 
+                            "email" : form.email.errors, 
+                            "password" : form.password.errors, 
+                            "confirm" : form.confirm.errors}
                    ), 400
 
 @user_bp.route("/login", methods=["POST"])

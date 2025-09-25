@@ -1,5 +1,5 @@
 const url: string = import.meta.env.VITE_API_URL;
-import type { LoginFormData } from "../types/types";
+import type { LoginFormData, SignupFormData } from "../types/types";
 
 async function fetchCredentials() {
     return await fetch(url + "/csrf", {
@@ -26,4 +26,24 @@ async function fetchLogin(
     });
 }
 
-export default { fetchCredentials, fetchLogin };
+async function fetchSignup(
+    signupFormData: SignupFormData,
+    csrftoken: string | null
+) {
+    return await fetch(url + "/signup", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken ? csrftoken : "",
+        },
+        body: JSON.stringify({
+            username: signupFormData.username,
+            email: signupFormData.email,
+            password: signupFormData.password,
+            confirm: signupFormData.confirm,
+        }),
+    });
+}
+
+export default { fetchCredentials, fetchLogin, fetchSignup };

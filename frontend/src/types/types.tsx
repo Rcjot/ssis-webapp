@@ -23,6 +23,20 @@ export interface LoginFormData {
     password: string;
 }
 
+export interface SignupFormData {
+    username: string;
+    email: string;
+    password: string;
+    confirm: string;
+}
+
+export interface SignupFormDataErrors {
+    username: string[];
+    email: string[];
+    password: string[];
+    confirm: string[];
+}
+
 export interface AuthType {
     status: "loading" | "authenticated" | "unauthenticated";
     csrftoken: string | null;

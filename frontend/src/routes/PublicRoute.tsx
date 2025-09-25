@@ -3,11 +3,10 @@ import { Outlet, Navigate } from "react-router-dom";
 
 function PublicRoute() {
     const { auth } = useAuth()!;
-
-    return auth.status === "unauthenticated" ? (
+    return auth.status === "unauthenticated" || auth.status === "loading" ? (
         <Outlet />
     ) : (
-        <Navigate to="/" replace />
+        <Navigate to="/home" replace />
     );
 }
 export default PublicRoute;

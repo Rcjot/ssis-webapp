@@ -63,7 +63,7 @@ function Login() {
                     value={formData.password}
                     required
                 />
-                <button type="submit">submit</button>
+                <button type="submit">login</button>
             </form>
             <p>
                 dont have account yet? <Link to="/signup">signup</Link>
