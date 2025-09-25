@@ -83,6 +83,11 @@ class Users(UserMixin) :
         password_hash = hashlib.md5(password.encode()).hexdigest()
         return self.password == password_hash
 
+    def check_username_exists(self) :
+        user = self.get_by_username(self.username)
+        print(user)
+        return True if user else False
+
     def get_json(self) :
         return {
             'id':self.id,

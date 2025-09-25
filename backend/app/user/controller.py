@@ -15,22 +15,30 @@ def add_user() :
 @user_bp.route("/signup", methods=["POST"])
 def signup_user() :
     data = request.get_json()
-    # form = UserForm(request.form)
+
     form = UserForm(data=data)
-    # print(form.username, form.password, form.email, form.csrf_token.data)
-    if form.validate() :
+    validated = form.validate()
+    error = {"username" :form.username.errors,
+             "email" : form.email.errors, 
+             "password" : form.password.errors, 
+             "confirm" : form.confirm.errors
+             }
+
+    if validated :
         new_user = Users(username=form.username.data, password=form.password.data, email=form.email.data)
-        
+        if new_user.check_username_exists() :
+            error["username"].append("username already exists")
+            return jsonify(success=False,
+                        message="Something went wrong signup",
+                        error =error
+                        ), 400
         new_user.add()
 
         return jsonify(success=True)
     
     return jsonify(success=False,
                    message="Something went wrong signup",
-                   error = {"username" :form.username.errors, 
-                            "email" : form.email.errors, 
-                            "password" : form.password.errors, 
-                            "confirm" : form.confirm.errors}
+                   error =error
                    ), 400
 
 @user_bp.route("/login", methods=["POST"])
