@@ -28,6 +28,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         fetchCredentials();
+        console.log("fetched creds");
     }, []);
 
     const login = useCallback(
@@ -46,6 +47,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
                     csrftoken: auth.csrftoken,
                     user: resjson.user,
                 }));
+                alert("login successful");
                 return true;
             } else {
                 setFormDataErrors(resjson.error);
@@ -55,12 +57,25 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         [auth.csrftoken]
     );
 
+    const logout = useCallback(async () => {
+        const res = await authApi.fetchLogout();
+        if (res.ok) {
+            setAuth((prev) => ({
+                ...prev,
+                status: "unauthenticated",
+                user: null,
+            }));
+            alert("logout successful");
+        }
+    }, []);
+
     const contextValue = useMemo(
         () => ({
             auth,
             login,
+            logout,
         }),
-        [auth, login]
+        [auth, login, logout]
     );
 
     return (

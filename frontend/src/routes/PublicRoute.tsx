@@ -3,7 +3,10 @@ import { Outlet, Navigate } from "react-router-dom";
 
 function PublicRoute() {
     const { auth } = useAuth()!;
-    return auth.status === "unauthenticated" || auth.status === "loading" ? (
+
+    if (auth.status === "loading") return <div>loading..</div>;
+
+    return auth.status === "unauthenticated" ? (
         <Outlet />
     ) : (
         <Navigate to="/home" replace />

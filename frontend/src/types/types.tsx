@@ -49,6 +49,7 @@ export interface AuthContextType {
         loginFormData: LoginFormData,
         setFormDataErrors: React.Dispatch<React.SetStateAction<LoginFormData>>
     ) => Promise<boolean>;
+    logout: () => Promise<void>;
 }
 
 export interface User {

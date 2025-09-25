@@ -46,4 +46,11 @@ async function fetchSignup(
     });
 }
 
-export default { fetchCredentials, fetchLogin, fetchSignup };
+async function fetchLogout() {
+    return await fetch(url + "/logout", {
+        method: "GET",
+        credentials: "include",
+    });
+}
+
+export default { fetchCredentials, fetchLogin, fetchSignup, fetchLogout };

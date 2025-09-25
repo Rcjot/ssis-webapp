@@ -6,6 +6,8 @@ function ProtectedRoute() {
     console.log("protected");
     const location = useLocation();
     console.log(location.pathname);
+    if (auth.status === "loading") return <div>loading..</div>;
+
     return auth.status === "authenticated" ? (
         <Outlet />
     ) : (
