@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { AuthContext } from "../ context/AuthContext";
-import type { AuthType } from "../types/types";
+import type { AuthType, LoginFormDataErrors } from "../types/types";
 import authApi from "../api/authApi";
 import type { LoginFormData } from "../types/types";
 
@@ -11,7 +11,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         user: null,
     });
 
-    const fetchCredentials = async () => {
+    const fetchCredentials = useCallback(async () => {
         try {
             const res = await authApi.fetchCredentials();
             const resjson = await res.json();
@@ -24,18 +24,18 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         } catch (error) {
             console.error(error);
         }
-    };
+    }, []);
 
     useEffect(() => {
         fetchCredentials();
         console.log("fetched creds");
-    }, []);
+    }, [fetchCredentials]);
 
     const login = useCallback(
         async (
             loginFormData: LoginFormData,
             setFormDataErrors: React.Dispatch<
-                React.SetStateAction<LoginFormData>
+                React.SetStateAction<LoginFormDataErrors>
             >
         ) => {
             const res = await authApi.fetchLogin(loginFormData, auth.csrftoken);

@@ -22,6 +22,7 @@ async function fetchLogin(
         body: JSON.stringify({
             username: loginFormData.username,
             password: loginFormData.password,
+            remember: loginFormData.remember,
         }),
     });
 }
@@ -53,4 +54,9 @@ async function fetchLogout() {
     });
 }
 
-export default { fetchCredentials, fetchLogin, fetchSignup, fetchLogout };
+export default {
+    fetchCredentials,
+    fetchLogin,
+    fetchSignup,
+    fetchLogout,
+};

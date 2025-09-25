@@ -12,4 +12,4 @@ class UserForm(FlaskForm) :
 class LoginForm(FlaskForm) :
     username = StringField(validators=[validators.DataRequired()])
     password = PasswordField(validators=[validators.DataRequired()])
-    # remember_me for persists add later
+    remember = BooleanField()

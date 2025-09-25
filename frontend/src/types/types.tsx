@@ -21,6 +21,12 @@ export interface College {
 export interface LoginFormData {
     username: string;
     password: string;
+    remember: boolean;
+}
+
+export interface LoginFormDataErrors {
+    username: string;
+    password: string;
 }
 
 export interface SignupFormData {
@@ -47,7 +53,9 @@ export interface AuthContextType {
     auth: AuthType;
     login: (
         loginFormData: LoginFormData,
-        setFormDataErrors: React.Dispatch<React.SetStateAction<LoginFormData>>
+        setFormDataErrors: React.Dispatch<
+            React.SetStateAction<LoginFormDataErrors>
+        >
     ) => Promise<boolean>;
     logout: () => Promise<void>;
 }

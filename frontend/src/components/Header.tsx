@@ -8,11 +8,15 @@ function Header() {
         <header className={styles.header}>
             <Link to={"/home"}>Home</Link>
             {auth.status === "authenticated" && (
-                <div>
-                    <Link to={"/students"}>Students</Link>
-                    <Link to={"/programs"}>Programs</Link>
-                    <Link to={"/colleges"}>Colleges</Link>
-                </div>
+                <>
+                    <p>hello {auth.user?.username}</p>
+
+                    <div>
+                        <Link to={"/students"}>Students</Link>
+                        <Link to={"/programs"}>Programs</Link>
+                        <Link to={"/colleges"}>Colleges</Link>
+                    </div>
+                </>
             )}
             {auth.status === "authenticated" ? (
                 <button onClick={logout}>logout</button>

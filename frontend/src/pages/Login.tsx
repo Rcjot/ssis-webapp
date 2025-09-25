@@ -1,4 +1,4 @@
-import type { LoginFormData } from "../types/types";
+import type { LoginFormData, LoginFormDataErrors } from "../types/types";
 import { useState } from "react";
 import styles from "./styles/Pages.module.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,9 +8,10 @@ function Login() {
     const [formData, setFormData] = useState<LoginFormData>({
         username: "",
         password: "",
+        remember: false,
     });
 
-    const [formDataErrors, setFormDataErrors] = useState<LoginFormData>({
+    const [formDataErrors, setFormDataErrors] = useState<LoginFormDataErrors>({
         username: "",
         password: "",
     });
@@ -63,6 +64,21 @@ function Login() {
                     value={formData.password}
                     required
                 />
+                <div>
+                    <input
+                        type="checkbox"
+                        name="rememberme"
+                        defaultChecked={formData.remember}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setFormData((prev) => ({
+                                ...prev,
+                                remember: e.target.checked,
+                            }))
+                        }
+                    />
+                    <label htmlFor="rememberme">remember me</label>
+                </div>
+
                 <button type="submit">login</button>
             </form>
             <p>

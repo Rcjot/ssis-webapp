@@ -13,9 +13,6 @@ def create_app() :
     app.config.from_mapping(
         SECRET_KEY = SECRET_KEY,
         DATABASE_URL = DATABASE_URL,
-        SESSION_PROTECT = 'strong', 
-        SESSION_COOKIE_HTTPONLY = True,
-        SESSION_COOKIE_SECURE = False
     )
 
     cors = CORS(app,
@@ -27,7 +24,6 @@ def create_app() :
     database.init_app(app)
 
     login_manager.init_app(app)
-    login_manager.session_protection='strong'
 
     #---- routers
     @app.route("/")

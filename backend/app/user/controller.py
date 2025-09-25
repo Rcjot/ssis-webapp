@@ -60,7 +60,7 @@ def signin_user() :
                            error=error
                            ), 401
         if user.check_password(form.password.data) :
-            login_user(user)
+            login_user(user, remember=form.remember.data)
             return jsonify(success=True, user=user.get_json()), 200
         else :
             error["password"]="incorrect password"
@@ -92,21 +92,28 @@ def test_auth() :
 
 @user_bp.route('/session')
 def get_session() :
+    # if current_user.is_authenticated :
+        # status = "authenticated"
+        # user = current_user.get_json()
+    # print(current_user.is_authenticated)
+    
+
     print(session)
-    return jsonify(success=True)
+    print(request.cookies.get("session"))
+    # generate_csrf()
+    response = jsonify(success=True)
+    response.headers.set("X-CSRFToken", generate_csrf())
+    return response
 
 @user_bp.route("/csrf") 
 def get_csrf() :
-    if current_user.is_authenticated :
+    if current_user.is_authenticated:
         status = "authenticated"
         user = current_user.get_json()
-
     else :
         status = "unauthenticated"
         user = None
-    # print(current_user)
 
     response = jsonify(detail="success", status=status, user=user )
     response.headers.set("X-CSRFToken", generate_csrf())
-    # print(response.headers)
     return response
