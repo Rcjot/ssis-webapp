@@ -12,3 +12,9 @@
     flex: 1;
     justify-content: space-between;
 }
+
+form {
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+}

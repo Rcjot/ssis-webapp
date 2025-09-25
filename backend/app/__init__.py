@@ -18,7 +18,10 @@ def create_app() :
         SESSION_COOKIE_SECURE = False
     )
 
-    cors = CORS(app, origins="*")
+    cors = CORS(app,
+                origins="*", 
+                supports_credentials=True,
+                expose_headers="X-CSRFToken")
 
     CSRFProtect(app)
     database.init_app(app)

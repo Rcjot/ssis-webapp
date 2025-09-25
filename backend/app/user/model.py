@@ -65,7 +65,7 @@ class Users(UserMixin) :
         cursor.execute(sql, (user_name,))
         result = cursor.fetchone()
         cursor.close()
-        print(result)
+        # print(result)
         if result :
             return cls(
                         id=result['id'],

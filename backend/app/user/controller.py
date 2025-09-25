@@ -24,7 +24,13 @@ def register_user() :
 
         return jsonify(success=True)
     
-    return jsonify(success=False, message="Something went wrong registering", error = [form.username.errors, form.email.errors, form.password.errors, form.confirm.errors]), 400
+    return jsonify(success=False,
+                   message="Something went wrong registering",
+                   error = {"usernameError" :form.username.errors, 
+                            "emailError" : form.email.errors, 
+                            "passwordError" : form.password.errors, 
+                            "confirmError" : form.confirm.errors}
+                   ), 400
 
 @user_bp.route("/login", methods=["POST"])
 def signin_user() :
@@ -34,12 +40,32 @@ def signin_user() :
 
     if form.validate() :
         user = model.Users.get_by_username(form.username.data)
-        
-        if user and user.check_password(form.password.data) :
+        error = {
+            "username" : "",
+            "password" : ""
+        }
+        if not user :
+            error["username"] = "no such user"
+            return jsonify(success=False, 
+                           message="usernameError occurred", 
+                           error=error
+                           ), 401
+        if user.check_password(form.password.data) :
             login_user(user)
-            return jsonify(success=True, user=user.get_json())
-        
-    return jsonify(success=False, message="Something went wrong registering", error = [form.username.errors, form.email.errors, form.password.errors, form.confirm.errors]), 400
+            return jsonify(success=True, user=user.get_json()), 200
+        else :
+            error["password"]="incorrect password"
+            return jsonify(success=False,
+                           message="passwordError occurred",
+                           error=error
+                           ), 401
+    error["username"] = form.username.errors
+    error["password"] = form.password.errors
+
+    return jsonify(success=False,
+                   message="Something went wrong registering",
+                   error=error
+                   ), 400
     
 @user_bp.route("/logout")
 @login_required
@@ -62,7 +88,16 @@ def get_session() :
 
 @user_bp.route("/csrf") 
 def get_csrf() :
-    response = jsonify(detail="success")
-    response.headers.set("X-CSRFToken", generate_csrf())
+    if current_user.is_authenticated :
+        status = "authenticated"
+        user = current_user.get_json()
 
+    else :
+        status = "unauthenticated"
+        user = None
+    # print(current_user)
+
+    response = jsonify(detail="success", status=status, user=user )
+    response.headers.set("X-CSRFToken", generate_csrf())
+    # print(response.headers)
     return response
