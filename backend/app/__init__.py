@@ -1,9 +1,9 @@
-from flask import Flask 
+from flask import Flask, jsonify
 from config import SECRET_KEY, DATABASE_URL
 from . import database
 from flask_cors import CORS
 from flask_login import LoginManager
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, CSRFError
 
 login_manager = LoginManager()
 
@@ -49,5 +49,10 @@ def create_app() :
     def load_user(user_id) :
         from .user import model
         return model.Users.get_by_id(user_id)
+    
+    @app.errorhandler(CSRFError)
+    def handle_csrf_error(e) :
+        print(e.description)
+        return jsonify(error="CSRF failed", message=e.description), 400
 
     return app

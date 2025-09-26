@@ -83,8 +83,9 @@ class Users(UserMixin) :
         password_hash = hashlib.md5(password.encode()).hexdigest()
         return self.password == password_hash
 
-    def check_username_exists(self) :
-        user = self.get_by_username(self.username)
+    @classmethod
+    def check_username_exists(clf, username) : #?
+        user = Users.get_by_username(username)
         print(user)
         return True if user else False
 
