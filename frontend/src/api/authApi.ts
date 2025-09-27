@@ -1,5 +1,5 @@
 const url: string = import.meta.env.VITE_API_URL;
-import type { LoginFormData, SignupFormData } from "../types/types";
+import type { LoginFormData, SignupFormData } from "../types/authTypes";
 
 async function fetchCredentials() {
     return await fetch(url + "/csrf", {

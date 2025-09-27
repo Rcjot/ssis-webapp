@@ -1,4 +1,4 @@
-import type { SignupFormData, SignupFormDataErrors } from "../types/types";
+import type { SignupFormData, SignupFormDataErrors } from "../types/authTypes";
 import { useState } from "react";
 import styles from "./styles/Pages.module.css";
 import { Link } from "react-router-dom";

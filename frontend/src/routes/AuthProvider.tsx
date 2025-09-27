@@ -1,8 +1,8 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { AuthContext } from "../ context/AuthContext";
-import type { AuthType, LoginFormDataErrors } from "../types/types";
+import type { AuthType, LoginFormDataErrors } from "../types/authTypes";
 import authApi from "../api/authApi";
-import type { LoginFormData } from "../types/types";
+import type { LoginFormData } from "../types/authTypes";
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
     const [auth, setAuth] = useState<AuthType>({

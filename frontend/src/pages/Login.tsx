@@ -1,4 +1,4 @@
-import type { LoginFormData, LoginFormDataErrors } from "../types/types";
+import type { LoginFormData, LoginFormDataErrors } from "../types/authTypes";
 import { useState } from "react";
 import styles from "./styles/Pages.module.css";
 import { Link, useNavigate } from "react-router-dom";
