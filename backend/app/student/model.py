@@ -22,16 +22,31 @@ class Students() :
         cursor.close()
 
     @classmethod
-    def all(cls) :
-        db = get_db()
-        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    def all(cls, limit, offset) :
+        try : 
+            db = get_db()
+            cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        sql = "SELECT * FROM students"
-        cursor.execute(sql)
-        result = cursor.fetchall()
-        cursor.close()
+            sql = "SELECT * FROM students LIMIT %s OFFSET %s"
+            cursor.execute(sql, (limit, offset))
+            result = cursor.fetchall()
+            cursor.close()
 
-        return result
+            return result
+        except Exception as e:
+            print(f"error getting students: {e}")
+    
+    @classmethod
+    def get_count(cls) :
+            db = get_db()
+            cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+            sql = "SELECT COUNT(*) FROM students"
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            cursor.close()
+
+            return result['count']
     
     @classmethod
     def update(cls, target_id, id, first_name, last_name, gender, year_level, program_code) :

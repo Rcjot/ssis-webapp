@@ -3,12 +3,24 @@ from .model import Students
 from flask_login import login_required
 from flask import request, jsonify
 from .forms import StudentForm
+import math
 
 
 @student_bp.route("/")
 @login_required
 def get_students() :
-    return jsonify(students=Students.all())
+    print(request.args)
+    page = int(request.args.get('page', default=1))
+    limit = int(request.args.get('limit', default = 10))
+    offset = (page - 1) * limit
+    count = Students.get_count()
+    total_pages = math.ceil(count/limit)
+
+    return jsonify(limit=limit, 
+                   count=count,
+                   page=page, 
+                   total_pages=total_pages,
+                   students=Students.all(limit, offset))
 
 @student_bp.route("/add", methods=["POST"])
 @login_required

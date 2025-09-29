@@ -16,16 +16,40 @@ class Colleges() :
         cursor.close()
 
     @classmethod
-    def all(cls) :
+    def all(cls, limit, offset) :
         db = get_db()
         cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        sql = "SELECT * FROM colleges"
+        sql = "SELECT * FROM colleges LIMIT %s OFFSET %s"
+        cursor.execute(sql, (limit, offset))
+        result = cursor.fetchall()
+        cursor.close()
+
+        return result
+
+    @classmethod 
+    def all_codes(cls) :
+        db = get_db()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+        sql = "SELECT code FROM colleges"
         cursor.execute(sql)
         result = cursor.fetchall()
         cursor.close()
 
         return result
+
+    @classmethod
+    def get_count(cls) :
+            db = get_db()
+            cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+            sql = "SELECT COUNT(*) FROM colleges"
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            cursor.close()
+
+            return result['count']
     
     @classmethod
     def update(cls, target_code, code, name) :

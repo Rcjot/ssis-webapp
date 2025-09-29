@@ -2,12 +2,28 @@ from . import program_bp
 from flask_login import login_required
 from flask import jsonify, request
 from .forms import ProgramForm
+import math
 from .model import Programs
 
 @program_bp.route("/")
 @login_required
 def get_programs() :
-    return jsonify(programs=Programs.all())
+    page = int(request.args.get('page', default=1))
+    limit = int(request.args.get('limit', default = 10))
+    offset = (int(page) - 1) * int(limit) 
+    count = Programs.get_count()
+    total_pages = math.ceil(count / limit)
+    return jsonify(
+                   limit=limit, 
+                   count=count,
+                   page=page, 
+                   total_pages=total_pages,
+                   programs=Programs.all(limit, offset))
+
+@program_bp.route("/codes")
+@login_required
+def get_program_codes() :
+    return jsonify(codes = Programs.all_codes())
 
 @program_bp.route("/add", methods=["POST"])
 @login_required

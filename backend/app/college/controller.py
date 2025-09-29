@@ -3,11 +3,27 @@ from .model import Colleges
 from flask_login import login_required
 from flask import request, jsonify
 from .forms import CollegeForm
+import math
 
 @college_bp.route("/") 
 @login_required
 def get_colleges() :
-    return jsonify(colleges=Colleges.all())
+    page = int(request.args.get('page', default=1))
+    limit = int(request.args.get('limit', default = 10))
+    offset = (int(page) - 1) * int(limit) 
+    count = Colleges.get_count()
+    total_pages = math.ceil(count/limit)
+    return jsonify(                   
+                   limit=limit, 
+                   count=count,
+                   page=page, 
+                   total_pages=total_pages,
+                   colleges=Colleges.all(limit, offset))
+
+@college_bp.route("/codes")
+@login_required
+def get_program_codes() :
+    return jsonify(codes = Colleges.all_codes())
 
 @college_bp.route("/add", methods=["POST"])
 @login_required
