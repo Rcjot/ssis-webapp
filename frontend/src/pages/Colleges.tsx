@@ -5,18 +5,21 @@ import PageNav from "../components/PageNav";
 import collegeApi from "../api/collegeApi";
 import { useAuth } from "../ context/AuthContext";
 import type { CollegeModalType } from "../types/collegeTypes";
-import CollegeModal from "../components/modals/CollegeModal";
+import Modal from "../components/modals/Modal";
+import CollegeForm from "../components/forms/CollegeForms";
 
 function Colleges() {
     const [colleges, setColleges] = useState<College[]>([]);
     const [pageNumber, setPageNumber] = useState<number>(1);
-    const [modalState, setModalState] = useState<CollegeModalType>({
+    const [formState, setFormState] = useState<CollegeModalType>({
         formType: "add",
         formData: {
             code: "",
             name: "",
         },
     });
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
     const { auth } = useAuth()!;
     const fetchColleges = useCallback(async () => {
         const res = await collegeApi.fetchColleges(auth.csrftoken);
@@ -30,18 +33,27 @@ function Colleges() {
 
     return (
         <div className={styles.pageContent}>
-            <CollegeModal onSuccess={fetchColleges} modalState={modalState} />
-            {/* <CollegeForm onSuccess={fetchColleges} /> */}
+            <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                <CollegeForm
+                    onSuccess={async () => {
+                        await fetchColleges();
+                        setIsOpen(false);
+                    }}
+                    formDataOriginal={formState.formData}
+                    formType={formState.formType}
+                />
+            </Modal>
             <h1>Colleges</h1>
             <button
                 onClick={() => {
-                    setModalState({
+                    setFormState({
                         formType: "add",
                         formData: {
                             code: "",
                             name: "",
                         },
                     });
+                    setIsOpen(true);
                 }}
             >
                 add
@@ -82,10 +94,11 @@ function Colleges() {
                                             </button>
                                             <button
                                                 onClick={() => {
-                                                    setModalState(() => ({
+                                                    setFormState(() => ({
                                                         formType: "edit",
                                                         formData: c,
                                                     }));
+                                                    setIsOpen(true);
                                                 }}
                                             >
                                                 edit

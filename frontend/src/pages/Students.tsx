@@ -4,13 +4,14 @@ import type { Student } from "../types/studentTypes";
 import styles from "./styles/Pages.module.css";
 import PageNav from "../components/PageNav";
 import { useAuth } from "../ context/AuthContext";
-import StudentModal from "../components/modals/StudentModal";
 import type { StudentModalType } from "../types/studentTypes";
+import Modal from "../components/modals/Modal";
+import StudentForm from "../components/forms/StudentForms";
 
 function Students() {
     const [students, setStudents] = useState<Student[]>([]);
     const [pageNumber, setPageNumber] = useState<number>(1);
-    const [modalState, setModalState] = useState<StudentModalType>({
+    const [formState, setFormState] = useState<StudentModalType>({
         formType: "add",
         formData: {
             id: "",
@@ -22,6 +23,7 @@ function Students() {
         },
     });
     // query params here?
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const { auth } = useAuth()!;
 
@@ -39,12 +41,20 @@ function Students() {
 
     return (
         <div className={styles.pageContent}>
-            <StudentModal onSuccess={fetchStudents} modalState={modalState} />
-            {/* <StudentForm onSuccess={fetchStudents} /> */}
+            <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                <StudentForm
+                    onSuccess={async () => {
+                        await fetchStudents();
+                        setIsOpen(false);
+                    }}
+                    formDataOriginal={formState.formData}
+                    formType={formState.formType}
+                />
+            </Modal>
             <h1>Students</h1>
             <button
                 onClick={() => {
-                    setModalState({
+                    setFormState({
                         formType: "add",
                         formData: {
                             id: "",
@@ -55,6 +65,7 @@ function Students() {
                             program_code: "",
                         },
                     });
+                    setIsOpen(true);
                 }}
             >
                 add
@@ -105,10 +116,11 @@ function Students() {
                                                 onClick={() => {
                                                     s.program_code =
                                                         s.program_code || "";
-                                                    setModalState(() => ({
+                                                    setFormState(() => ({
                                                         formType: "edit",
                                                         formData: s,
                                                     }));
+                                                    setIsOpen(true);
                                                 }}
                                             >
                                                 edit

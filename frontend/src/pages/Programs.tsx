@@ -4,13 +4,14 @@ import type { Program } from "../types/programTypes";
 import styles from "./styles/Pages.module.css";
 import PageNav from "../components/PageNav";
 import { useAuth } from "../ context/AuthContext";
-import ProgramModal from "../components/modals/ProgramModal";
 import type { ProgramModalType } from "../types/programTypes";
+import ProgramForm from "../components/forms/ProgramForms";
+import Modal from "../components/modals/Modal";
 
 function Programs() {
     const [programs, setPrograms] = useState<Program[]>([]);
     const [pageNumber, setPageNumber] = useState<number>(1);
-    const [modalState, setModalState] = useState<ProgramModalType>({
+    const [formState, setFormState] = useState<ProgramModalType>({
         formType: "add",
         formData: {
             code: "",
@@ -18,6 +19,8 @@ function Programs() {
             college_code: "",
         },
     });
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
     const { auth } = useAuth()!;
     const fetchPrograms = useCallback(async () => {
         const res = await programApi.fetchPrograms(auth.csrftoken);
@@ -31,12 +34,21 @@ function Programs() {
 
     return (
         <div className={styles.pageContent}>
-            <ProgramModal onSuccess={fetchPrograms} modalState={modalState} />
-            {/* <ProgramForm onSuccess={fetchPrograms} /> */}
+            {/* <ProgramModal onSuccess={fetchPrograms} modalState={modalState} /> */}
+            <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                <ProgramForm
+                    onSuccess={async () => {
+                        await fetchPrograms();
+                        setIsOpen(false);
+                    }}
+                    formDataOriginal={formState.formData}
+                    formType={formState.formType}
+                />
+            </Modal>
             <h1>Programs</h1>
             <button
                 onClick={() => {
-                    setModalState({
+                    setFormState({
                         formType: "add",
                         formData: {
                             code: "",
@@ -44,6 +56,7 @@ function Programs() {
                             college_code: "",
                         },
                     });
+                    setIsOpen(true);
                 }}
             >
                 add
@@ -88,10 +101,11 @@ function Programs() {
                                                 onClick={() => {
                                                     p.college_code =
                                                         p.college_code || "";
-                                                    setModalState(() => ({
+                                                    setFormState(() => ({
                                                         formType: "edit",
                                                         formData: p,
                                                     }));
+                                                    setIsOpen(true);
                                                 }}
                                             >
                                                 edit
