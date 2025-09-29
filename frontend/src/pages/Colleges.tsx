@@ -9,7 +9,7 @@ import Modal from "../components/modals/Modal";
 import CollegeForm from "../components/forms/CollegeForms";
 
 function Colleges() {
-    const [colleges, setColleges] = useState<College[]>([]);
+    const [colleges, setColleges] = useState<College[] | null>(null);
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [formState, setFormState] = useState<CollegeModalType>({
         formType: "add",
@@ -59,7 +59,9 @@ function Colleges() {
                 add
             </button>
             <div className={styles.contentContainer}>
-                {colleges.length === 0 ? (
+                {colleges == null ? (
+                    <div>loading...</div>
+                ) : colleges.length === 0 ? (
                     <div>empty</div>
                 ) : (
                     <table className="table">

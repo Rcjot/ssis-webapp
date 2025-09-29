@@ -9,7 +9,7 @@ import Modal from "../components/modals/Modal";
 import StudentForm from "../components/forms/StudentForms";
 
 function Students() {
-    const [students, setStudents] = useState<Student[]>([]);
+    const [students, setStudents] = useState<Student[] | null>(null);
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [formState, setFormState] = useState<StudentModalType>({
         formType: "add",
@@ -18,7 +18,7 @@ function Students() {
             first_name: "",
             last_name: "",
             year_level: 1,
-            gender: "",
+            gender: "m",
             program_code: "",
         },
     });
@@ -71,7 +71,9 @@ function Students() {
                 add
             </button>
             <div className={styles.contentContainer}>
-                {students.length === 0 ? (
+                {students == null ? (
+                    <div>loading...</div>
+                ) : students.length === 0 ? (
                     <div>empty</div>
                 ) : (
                     <table className="table">

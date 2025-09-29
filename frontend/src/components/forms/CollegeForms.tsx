@@ -29,7 +29,6 @@ function CollegeForm({
             code: [],
             name: [],
         });
-
     const { auth } = useAuth()!;
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

@@ -5,6 +5,8 @@ import type {
     AddProgramFormDataErrors,
 } from "../../types/programTypes";
 import programApi from "../../api/programApi";
+import type { College } from "../../types/collegeTypes";
+import collegeApi from "../../api/collegeApi";
 
 function ProgramForm({
     onSuccess,
@@ -20,6 +22,17 @@ function ProgramForm({
         name: "",
         college_code: "",
     });
+    const [collegeOptions, setCollegeOptions] = useState<College[]>([]);
+
+    useEffect(() => {
+        const fetchColleges = async () => {
+            const res = await collegeApi.fetchColleges(auth.csrftoken);
+            const resjson = await res.json();
+            setCollegeOptions(resjson.colleges);
+            console.log(resjson);
+        };
+        fetchColleges();
+    });
 
     useEffect(() => {
         setFormData(formDataOriginal);
@@ -34,7 +47,11 @@ function ProgramForm({
 
     const { auth } = useAuth()!;
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleChange(
+        e:
+            | React.ChangeEvent<HTMLInputElement>
+            | React.ChangeEvent<HTMLSelectElement>
+    ) {
         setFormData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
@@ -93,12 +110,20 @@ function ProgramForm({
             />
             <label htmlFor="college_code">college code</label>
             <span>{formDataErrors.college_code.join(" ")}</span>
-            <input
-                type="text"
+            <select
+                className="form-select"
+                aria-label="college select"
                 name="college_code"
-                onChange={handleChange}
+                id="college_code"
                 value={formData.college_code}
-            />
+                onChange={handleChange}
+            >
+                <option value="">None</option>
+
+                {collegeOptions.map((college) => {
+                    return <option value={college.code}>{college.code}</option>;
+                })}
+            </select>
 
             <button type="submit">{formType} Program</button>
         </form>

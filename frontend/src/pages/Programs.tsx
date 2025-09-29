@@ -9,7 +9,7 @@ import ProgramForm from "../components/forms/ProgramForms";
 import Modal from "../components/modals/Modal";
 
 function Programs() {
-    const [programs, setPrograms] = useState<Program[]>([]);
+    const [programs, setPrograms] = useState<Program[] | null>(null);
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [formState, setFormState] = useState<ProgramModalType>({
         formType: "add",
@@ -34,7 +34,6 @@ function Programs() {
 
     return (
         <div className={styles.pageContent}>
-            {/* <ProgramModal onSuccess={fetchPrograms} modalState={modalState} /> */}
             <Modal open={isOpen} onClose={() => setIsOpen(false)}>
                 <ProgramForm
                     onSuccess={async () => {
@@ -62,7 +61,9 @@ function Programs() {
                 add
             </button>
             <div className={styles.contentContainer}>
-                {programs.length === 0 ? (
+                {programs == null ? (
+                    <div>loading...</div>
+                ) : programs.length === 0 ? (
                     <div>empty</div>
                 ) : (
                     <table className="table">
@@ -80,7 +81,7 @@ function Programs() {
                                     <tr key={p.code}>
                                         <td>{p.code}</td>
                                         <td>{p.name}</td>
-                                        <td>{p.college_code}</td>
+                                        <td>{p.college_code || "null"}</td>
                                         <td style={{ width: "10px" }}>
                                             <button
                                                 onClick={async () => {

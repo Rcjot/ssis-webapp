@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../ context/AuthContext";
 import type {
     AddStudentFormData,
     AddStudentFormDataErrors,
 } from "../../types/studentTypes";
 import studentApi from "../../api/studentApi";
+import type { Program } from "../../types/programTypes";
+import programApi from "../../api/programApi";
 
 function StudentForm({
     onSuccess,
@@ -17,10 +19,23 @@ function StudentForm({
 }) {
     const [formData, setFormData] =
         useState<AddStudentFormData>(formDataOriginal);
+    const [programOptions, setProgramOptions] = useState<Program[]>([]);
+
+    const { auth } = useAuth()!;
 
     useEffect(() => {
         setFormData(formDataOriginal);
     }, [formDataOriginal]);
+
+    useEffect(() => {
+        const fetchPrograms = async () => {
+            const res = await programApi.fetchPrograms(auth.csrftoken);
+            const resjson = await res.json();
+            console.log(resjson.programs);
+            setProgramOptions(resjson.programs);
+        };
+        fetchPrograms();
+    }, [auth.csrftoken]);
 
     const [formDataErrors, setFormDataErrors] =
         useState<AddStudentFormDataErrors>({
@@ -35,9 +50,11 @@ function StudentForm({
 
     //put some errors
 
-    const { auth } = useAuth()!;
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleChange(
+        e:
+            | React.ChangeEvent<HTMLInputElement>
+            | React.ChangeEvent<HTMLSelectElement>
+    ) {
         setFormData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
@@ -118,21 +135,37 @@ function StudentForm({
             />
             <label htmlFor="gender">gender</label>
             <span>{formDataErrors.gender.join(" ")}</span>
-            <input
-                type="text"
+            <select
+                className="form-select"
+                aria-label="gender select"
                 name="gender"
-                onChange={handleChange}
+                id="gender"
                 value={formData.gender}
-                required
-            />
+                onChange={handleChange}
+            >
+                <option value="m">m</option>
+                <option value="f">f</option>
+            </select>
             <label htmlFor="program_code">program</label>
             <span>{formDataErrors.program_code.join(" ")}</span>
-            <input
-                type="text"
+            <select
+                className="form-select"
+                aria-label="program select"
                 name="program_code"
-                onChange={handleChange}
+                id="program_code"
                 value={formData.program_code}
-            />
+                onChange={handleChange}
+            >
+                <option value="">None</option>
+
+                {programOptions.map((program) => {
+                    return (
+                        <option key={program.code} value={program.code}>
+                            {program.code}
+                        </option>
+                    );
+                })}
+            </select>
             <button type="submit">{formType} student</button>
         </form>
     );
