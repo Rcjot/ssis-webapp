@@ -22,13 +22,34 @@ class Students() :
         cursor.close()
 
     @classmethod
-    def all(cls, limit, offset) :
+    def all(cls, limit, offset, search, sortBy, direction) :
         try : 
             db = get_db()
             cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-            sql = "SELECT * FROM students LIMIT %s OFFSET %s"
-            cursor.execute(sql, (limit, offset))
+
+            params = []
+            search = "%" + search + "%"
+            sql = "SELECT * FROM students "
+            where = """
+                    WHERE id LIKE %s 
+                    OR first_name LIKE %s 
+                    OR last_name LIKE %s 
+                    OR gender LIKE %s 
+                    OR CAST(year_level AS TEXT) LIKE %s 
+                    OR program_code LIKE %s 
+                    """
+            sql += where
+            params.extend([search] * 6)
+            orderby = f"ORDER BY {sortBy} {direction} "
+            if sortBy != 'none' :
+                sql += orderby
+
+            limitoffset = "LIMIT %s OFFSET %s"
+            sql+= limitoffset
+            params.extend([limit, offset])
+
+            cursor.execute(sql, params)
             result = cursor.fetchall()
             cursor.close()
 

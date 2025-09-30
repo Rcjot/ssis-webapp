@@ -7,20 +7,30 @@ import math
 
 
 @student_bp.route("/")
-@login_required
+# @login_required
 def get_students() :
-    print(request.args)
-    page = int(request.args.get('page', default=1))
-    limit = int(request.args.get('limit', default = 10))
+    search = request.args.get('search', default="", type=str)
+    sortBy = request.args.get('sortBy', default="none", type=str)
+    direction = request.args.get('direction', default="ASC", type=str)
+
+    page = request.args.get('page', default=1, type=int)
+    limit = request.args.get('limit', default = 10, type=int)
     offset = (page - 1) * limit
     count = Students.get_count()
     total_pages = math.ceil(count/limit)
+
+    if sortBy not in ['id','first_name', 'last_name','gender', 'year_level', 'program_code'] :
+        sortBy = 'none'
+
+    if direction not in ['ASC', 'DESC'] :
+        direction = 'ASC'
+        
 
     return jsonify(limit=limit, 
                    count=count,
                    page=page, 
                    total_pages=total_pages,
-                   students=Students.all(limit, offset))
+                   students=Students.all(limit, offset, search, sortBy, direction))
 
 @student_bp.route("/add", methods=["POST"])
 @login_required

@@ -8,17 +8,29 @@ import math
 @college_bp.route("/") 
 @login_required
 def get_colleges() :
-    page = int(request.args.get('page', default=1))
-    limit = int(request.args.get('limit', default = 10))
-    offset = (int(page) - 1) * int(limit) 
+    search = request.args.get('search', default="", type=str)
+    sortBy = request.args.get('sortBy', default="none", type=str)
+    direction = request.args.get('direction', default="ASC", type=str)
+    page = request.args.get('page', default=1, type= int)
+    limit = request.args.get('limit', default = 10, type=int)
+    offset = (page - 1) * limit
     count = Colleges.get_count()
     total_pages = math.ceil(count/limit)
+
+    if sortBy not in ['code', 'name'] :
+        sortBy = 'none'
+
+    if direction not in ['ASC', 'DESC'] :
+        direction = 'ASC'
+
+    print(search, sortBy, direction, page, limit, offset, count, total_pages)
+
     return jsonify(                   
                    limit=limit, 
                    count=count,
                    page=page, 
                    total_pages=total_pages,
-                   colleges=Colleges.all(limit, offset))
+                   colleges=Colleges.all(limit, offset, search, sortBy, direction))
 
 @college_bp.route("/codes")
 @login_required

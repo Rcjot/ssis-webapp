@@ -6,19 +6,30 @@ import math
 from .model import Programs
 
 @program_bp.route("/")
-@login_required
+# @login_required
 def get_programs() :
-    page = int(request.args.get('page', default=1))
-    limit = int(request.args.get('limit', default = 10))
-    offset = (int(page) - 1) * int(limit) 
+    search = request.args.get('search', default="", type=str)
+    sortBy = request.args.get('sortBy', default="none", type=str)
+    direction = request.args.get('direction', default="ASC", type=str)
+
+    page = request.args.get('page', default=1, type=int)
+    limit = request.args.get('limit', default = 10, type=int)
+    offset = (page - 1) * limit
     count = Programs.get_count()
     total_pages = math.ceil(count / limit)
+
+    if sortBy not in ['code', 'name', 'college_code'] :
+        sortBy = 'none'
+
+    if direction not in ['ASC', 'DESC'] :
+        direction = 'ASC'
+        
     return jsonify(
                    limit=limit, 
                    count=count,
                    page=page, 
                    total_pages=total_pages,
-                   programs=Programs.all(limit, offset))
+                   programs=Programs.all(limit, offset, search, sortBy, direction))
 
 @program_bp.route("/codes")
 @login_required
