@@ -8,6 +8,7 @@ import type { ProgramModalType } from "../types/programTypes";
 import ProgramForm from "../components/forms/ProgramForms";
 import Modal from "../components/modals/Modal";
 import type { QueryParams } from "../types/types";
+import QueryBar from "../components/QueryBar";
 
 function Programs() {
     const [programs, setPrograms] = useState<Program[] | null>(null);
@@ -24,6 +25,7 @@ function Programs() {
     const [queryParams, setQueryParams] = useState<QueryParams>({
         search: "",
         sortBy: "none",
+        direction: "ASC",
         pageNumber: 1,
         limit: 5,
     });
@@ -69,35 +71,12 @@ function Programs() {
             >
                 add
             </button>
-            <label htmlFor="search"></label>
-            <input
-                type="text"
-                name="search"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setQueryParams((prev) => ({
-                        ...prev,
-                        search: e.target.value,
-                    }))
-                }
-            />
-            <label htmlFor="sortBy">sort by</label>
-            <select
-                className="form-select"
-                aria-label="program query"
-                name="query"
-                id="program_query"
-                value={queryParams.sortBy}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                    setQueryParams((prev) => ({
-                        ...prev,
-                        sortBy: e.target.value,
-                    }))
-                }
-            >
+            <QueryBar setQueryParams={setQueryParams} queryParams={queryParams}>
                 <option value="">none</option>
                 <option value="code">code</option>
+                <option value="name">name</option>
                 <option value="college_code">college</option>
-            </select>
+            </QueryBar>
             <div className={styles.contentContainer}>
                 {programs == null ? (
                     <div>loading...</div>

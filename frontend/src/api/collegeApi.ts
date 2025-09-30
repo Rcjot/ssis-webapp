@@ -6,7 +6,7 @@ async function fetchColleges(
     queryParams: QueryParams,
     csrftoken: string | null
 ) {
-    const query = `?page=${queryParams.pageNumber}&limit=${queryParams.limit}&search=${queryParams.search}&sortBy=${queryParams.sortBy}`;
+    const query = `?page=${queryParams.pageNumber}&limit=${queryParams.limit}&search=${queryParams.search}&sortBy=${queryParams.sortBy}&direction=${queryParams.direction}`;
 
     return await fetch(url + "/college/" + query, {
         method: "GET",

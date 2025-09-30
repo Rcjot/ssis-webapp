@@ -8,6 +8,7 @@ import type { CollegeModalType } from "../types/collegeTypes";
 import Modal from "../components/modals/Modal";
 import CollegeForm from "../components/forms/CollegeForms";
 import type { QueryParams } from "../types/types";
+import QueryBar from "../components/QueryBar";
 
 function Colleges() {
     const [colleges, setColleges] = useState<College[] | null>(null);
@@ -23,6 +24,7 @@ function Colleges() {
     const [queryParams, setQueryParams] = useState<QueryParams>({
         search: "",
         sortBy: "none",
+        direction: "ASC",
         pageNumber: 1,
         limit: 5,
     });
@@ -68,34 +70,11 @@ function Colleges() {
             >
                 add
             </button>
-            <label htmlFor="search"></label>
-            <input
-                type="text"
-                name="search"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setQueryParams((prev) => ({
-                        ...prev,
-                        search: e.target.value,
-                    }))
-                }
-            />
-            <label htmlFor="sortBy">sort by</label>
-            <select
-                className="form-select"
-                aria-label="college query"
-                name="query"
-                id="college_query"
-                value={queryParams.sortBy}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                    setQueryParams((prev) => ({
-                        ...prev,
-                        sortBy: e.target.value,
-                    }))
-                }
-            >
+            <QueryBar setQueryParams={setQueryParams} queryParams={queryParams}>
                 <option value="">none</option>
                 <option value="code">code</option>
-            </select>
+                <option value="name">name</option>
+            </QueryBar>
             <div className={styles.contentContainer}>
                 {colleges == null ? (
                     <div>loading...</div>

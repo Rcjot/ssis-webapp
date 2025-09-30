@@ -8,6 +8,7 @@ import type { StudentModalType } from "../types/studentTypes";
 import Modal from "../components/modals/Modal";
 import StudentForm from "../components/forms/StudentForms";
 import type { QueryParams } from "../types/types";
+import QueryBar from "../components/QueryBar";
 
 function Students() {
     const [students, setStudents] = useState<Student[] | null>(null);
@@ -28,6 +29,7 @@ function Students() {
     const [queryParams, setQueryParams] = useState<QueryParams>({
         search: "",
         sortBy: "none",
+        direction: "ASC",
         pageNumber: 1,
         limit: 5,
     });
@@ -78,35 +80,13 @@ function Students() {
             >
                 add
             </button>
-            <label htmlFor="search"></label>
-            <input
-                type="text"
-                name="search"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setQueryParams((prev) => ({
-                        ...prev,
-                        search: e.target.value,
-                    }))
-                }
-            />
-            <label htmlFor="sortBy">sort by</label>
-            <select
-                className="form-select"
-                aria-label="student query"
-                name="query"
-                id="student_query"
-                value={queryParams.sortBy}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                    setQueryParams((prev) => ({
-                        ...prev,
-                        sortBy: e.target.value,
-                    }))
-                }
-            >
+            <QueryBar setQueryParams={setQueryParams} queryParams={queryParams}>
                 <option value="">none</option>
+                <option value="id">id</option>
                 <option value="last_name">last name</option>
-                <option value="program">program</option>
-            </select>
+                <option value="year_level">year level</option>
+                <option value="program_code">program</option>
+            </QueryBar>
             <div className={styles.contentContainer}>
                 {students == null ? (
                     <div>loading...</div>
