@@ -5,7 +5,6 @@ import type {
     AddStudentFormDataErrors,
 } from "../../types/studentTypes";
 import studentApi from "../../api/studentApi";
-import type { Program } from "../../types/programTypes";
 import programApi from "../../api/programApi";
 
 function StudentForm({
@@ -19,7 +18,7 @@ function StudentForm({
 }) {
     const [formData, setFormData] =
         useState<AddStudentFormData>(formDataOriginal);
-    const [programOptions, setProgramOptions] = useState<Program[]>([]);
+    const [programOptions, setProgramOptions] = useState<string[]>([]);
 
     const { auth } = useAuth()!;
 
@@ -29,10 +28,12 @@ function StudentForm({
 
     useEffect(() => {
         const fetchPrograms = async () => {
-            const res = await programApi.fetchPrograms(auth.csrftoken);
+            const res = await programApi.fetchProgramCodes(auth.csrftoken);
             const resjson = await res.json();
-            console.log(resjson.programs);
-            setProgramOptions(resjson.programs);
+            console.log(resjson);
+            setProgramOptions(
+                resjson.codes.map((program: { code: string }) => program.code)
+            );
         };
         fetchPrograms();
     }, [auth.csrftoken]);
@@ -158,10 +159,10 @@ function StudentForm({
             >
                 <option value="">None</option>
 
-                {programOptions.map((program) => {
+                {programOptions.map((programCode) => {
                     return (
-                        <option key={program.code} value={program.code}>
-                            {program.code}
+                        <option key={programCode} value={programCode}>
+                            {programCode}
                         </option>
                     );
                 })}

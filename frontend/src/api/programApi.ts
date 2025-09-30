@@ -1,8 +1,14 @@
 const url: string = import.meta.env.VITE_API_URL;
 import type { AddProgramFormData } from "../types/programTypes";
+import type { QueryParams } from "../types/types";
 
-async function fetchPrograms(csrftoken: string | null) {
-    return await fetch(url + "/program/", {
+async function fetchPrograms(
+    queryParams: QueryParams,
+    csrftoken: string | null
+) {
+    const query = `?page=${queryParams.pageNumber}&limit=${queryParams.limit}&search=${queryParams.search}&sortBy=${queryParams.sortBy}`;
+
+    return await fetch(url + "/program/" + query, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -10,6 +16,17 @@ async function fetchPrograms(csrftoken: string | null) {
         },
     });
 }
+
+async function fetchProgramCodes(csrftoken: string | null) {
+    return await fetch(url + "/program/codes", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "X-CSRFToken": csrftoken ? csrftoken : "",
+        },
+    });
+}
+
 async function fetchAddProgram(
     addProgramFormData: AddProgramFormData,
     csrftoken: string | null
@@ -65,6 +82,7 @@ async function fetchDeleteProgram(
 
 export default {
     fetchPrograms,
+    fetchProgramCodes,
     fetchAddProgram,
     fetchEditProgram,
     fetchDeleteProgram,

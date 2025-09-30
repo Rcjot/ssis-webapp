@@ -7,10 +7,10 @@ import { useAuth } from "../ context/AuthContext";
 import type { CollegeModalType } from "../types/collegeTypes";
 import Modal from "../components/modals/Modal";
 import CollegeForm from "../components/forms/CollegeForms";
+import type { QueryParams } from "../types/types";
 
 function Colleges() {
     const [colleges, setColleges] = useState<College[] | null>(null);
-    const [pageNumber, setPageNumber] = useState<number>(1);
     const [formState, setFormState] = useState<CollegeModalType>({
         formType: "add",
         formData: {
@@ -19,14 +19,24 @@ function Colleges() {
         },
     });
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [maxPage, setMaxPage] = useState<number>(1);
+    const [queryParams, setQueryParams] = useState<QueryParams>({
+        search: "",
+        sortBy: "none",
+        pageNumber: 1,
+        limit: 5,
+    });
 
     const { auth } = useAuth()!;
+
     const fetchColleges = useCallback(async () => {
-        const res = await collegeApi.fetchColleges(auth.csrftoken);
+        const res = await collegeApi.fetchColleges(queryParams, auth.csrftoken);
         const resjson = await res.json();
         setColleges(resjson.colleges);
+        setMaxPage(resjson.total_pages);
         console.log(resjson);
-    }, [auth.csrftoken]);
+    }, [queryParams, auth.csrftoken]);
+
     useEffect(() => {
         fetchColleges();
     }, [fetchColleges]);
@@ -58,6 +68,34 @@ function Colleges() {
             >
                 add
             </button>
+            <label htmlFor="search"></label>
+            <input
+                type="text"
+                name="search"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setQueryParams((prev) => ({
+                        ...prev,
+                        search: e.target.value,
+                    }))
+                }
+            />
+            <label htmlFor="sortBy">sort by</label>
+            <select
+                className="form-select"
+                aria-label="college query"
+                name="query"
+                id="college_query"
+                value={queryParams.sortBy}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                    setQueryParams((prev) => ({
+                        ...prev,
+                        sortBy: e.target.value,
+                    }))
+                }
+            >
+                <option value="">none</option>
+                <option value="code">code</option>
+            </select>
             <div className={styles.contentContainer}>
                 {colleges == null ? (
                     <div>loading...</div>
@@ -113,8 +151,10 @@ function Colleges() {
                     </table>
                 )}
                 <PageNav
-                    pageNumber={pageNumber}
-                    setPageNumber={setPageNumber}
+                    pageNumber={queryParams.pageNumber}
+                    maxPage={maxPage}
+                    limit={queryParams.limit}
+                    setQueryParams={setQueryParams}
                 />
             </div>
         </div>

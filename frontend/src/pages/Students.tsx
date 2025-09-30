@@ -7,10 +7,10 @@ import { useAuth } from "../ context/AuthContext";
 import type { StudentModalType } from "../types/studentTypes";
 import Modal from "../components/modals/Modal";
 import StudentForm from "../components/forms/StudentForms";
+import type { QueryParams } from "../types/types";
 
 function Students() {
     const [students, setStudents] = useState<Student[] | null>(null);
-    const [pageNumber, setPageNumber] = useState<number>(1);
     const [formState, setFormState] = useState<StudentModalType>({
         formType: "add",
         formData: {
@@ -24,16 +24,24 @@ function Students() {
     });
     // query params here?
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [maxPage, setMaxPage] = useState<number>(1);
+    const [queryParams, setQueryParams] = useState<QueryParams>({
+        search: "",
+        sortBy: "none",
+        pageNumber: 1,
+        limit: 5,
+    });
 
     const { auth } = useAuth()!;
 
     const fetchStudents = useCallback(async () => {
         console.log("called");
-        const res = await studentApi.fetchStudents(auth.csrftoken);
+        const res = await studentApi.fetchStudents(queryParams, auth.csrftoken);
         const resjson = await res.json();
         console.log(resjson);
         setStudents(resjson.students);
-    }, [auth.csrftoken]);
+        setMaxPage(resjson.total_pages);
+    }, [queryParams, auth.csrftoken]);
 
     useEffect(() => {
         fetchStudents();
@@ -70,6 +78,35 @@ function Students() {
             >
                 add
             </button>
+            <label htmlFor="search"></label>
+            <input
+                type="text"
+                name="search"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setQueryParams((prev) => ({
+                        ...prev,
+                        search: e.target.value,
+                    }))
+                }
+            />
+            <label htmlFor="sortBy">sort by</label>
+            <select
+                className="form-select"
+                aria-label="student query"
+                name="query"
+                id="student_query"
+                value={queryParams.sortBy}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                    setQueryParams((prev) => ({
+                        ...prev,
+                        sortBy: e.target.value,
+                    }))
+                }
+            >
+                <option value="">none</option>
+                <option value="last_name">last name</option>
+                <option value="program">program</option>
+            </select>
             <div className={styles.contentContainer}>
                 {students == null ? (
                     <div>loading...</div>
@@ -135,8 +172,10 @@ function Students() {
                     </table>
                 )}
                 <PageNav
-                    pageNumber={pageNumber}
-                    setPageNumber={setPageNumber}
+                    pageNumber={queryParams.pageNumber}
+                    maxPage={maxPage}
+                    limit={queryParams.limit}
+                    setQueryParams={setQueryParams}
                 />
             </div>
         </div>

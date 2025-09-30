@@ -1,8 +1,14 @@
 const url: string = import.meta.env.VITE_API_URL;
 import type { AddCollegeFormData } from "../types/collegeTypes";
+import type { QueryParams } from "../types/types";
 
-async function fetchColleges(csrftoken: string | null) {
-    return await fetch(url + "/college/", {
+async function fetchColleges(
+    queryParams: QueryParams,
+    csrftoken: string | null
+) {
+    const query = `?page=${queryParams.pageNumber}&limit=${queryParams.limit}&search=${queryParams.search}&sortBy=${queryParams.sortBy}`;
+
+    return await fetch(url + "/college/" + query, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -10,6 +16,17 @@ async function fetchColleges(csrftoken: string | null) {
         },
     });
 }
+
+async function fetchCollegeCodes(csrftoken: string | null) {
+    return await fetch(url + "/college/codes", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "X-CSRFToken": csrftoken ? csrftoken : "",
+        },
+    });
+}
+
 async function fetchAddCollege(
     addCollegeFormData: AddCollegeFormData,
     csrftoken: string | null
@@ -63,6 +80,7 @@ async function fetchDeleteCollege(
 
 export default {
     fetchColleges,
+    fetchCollegeCodes,
     fetchAddCollege,
     fetchEditCollege,
     fetchDeleteCollege,

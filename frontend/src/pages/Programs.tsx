@@ -7,10 +7,10 @@ import { useAuth } from "../ context/AuthContext";
 import type { ProgramModalType } from "../types/programTypes";
 import ProgramForm from "../components/forms/ProgramForms";
 import Modal from "../components/modals/Modal";
+import type { QueryParams } from "../types/types";
 
 function Programs() {
     const [programs, setPrograms] = useState<Program[] | null>(null);
-    const [pageNumber, setPageNumber] = useState<number>(1);
     const [formState, setFormState] = useState<ProgramModalType>({
         formType: "add",
         formData: {
@@ -20,14 +20,23 @@ function Programs() {
         },
     });
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [maxPage, setMaxPage] = useState<number>(1);
+    const [queryParams, setQueryParams] = useState<QueryParams>({
+        search: "",
+        sortBy: "none",
+        pageNumber: 1,
+        limit: 5,
+    });
 
     const { auth } = useAuth()!;
     const fetchPrograms = useCallback(async () => {
-        const res = await programApi.fetchPrograms(auth.csrftoken);
+        const res = await programApi.fetchPrograms(queryParams, auth.csrftoken);
         const resjson = await res.json();
         console.log(resjson.programs);
         setPrograms(resjson.programs);
-    }, [auth.csrftoken]);
+        setMaxPage(resjson.total_pages);
+    }, [queryParams, auth.csrftoken]);
+
     useEffect(() => {
         fetchPrograms();
     }, [fetchPrograms]);
@@ -60,6 +69,35 @@ function Programs() {
             >
                 add
             </button>
+            <label htmlFor="search"></label>
+            <input
+                type="text"
+                name="search"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setQueryParams((prev) => ({
+                        ...prev,
+                        search: e.target.value,
+                    }))
+                }
+            />
+            <label htmlFor="sortBy">sort by</label>
+            <select
+                className="form-select"
+                aria-label="program query"
+                name="query"
+                id="program_query"
+                value={queryParams.sortBy}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                    setQueryParams((prev) => ({
+                        ...prev,
+                        sortBy: e.target.value,
+                    }))
+                }
+            >
+                <option value="">none</option>
+                <option value="code">code</option>
+                <option value="college_code">college</option>
+            </select>
             <div className={styles.contentContainer}>
                 {programs == null ? (
                     <div>loading...</div>
@@ -119,8 +157,10 @@ function Programs() {
                     </table>
                 )}
                 <PageNav
-                    pageNumber={pageNumber}
-                    setPageNumber={setPageNumber}
+                    pageNumber={queryParams.pageNumber}
+                    maxPage={maxPage}
+                    limit={queryParams.limit}
+                    setQueryParams={setQueryParams}
                 />
             </div>
         </div>

@@ -1,8 +1,13 @@
 const url: string = import.meta.env.VITE_API_URL;
 import type { AddStudentFormData } from "../types/studentTypes";
+import type { QueryParams } from "../types/types";
 
-async function fetchStudents(csrftoken: string | null) {
-    return await fetch(url + "/student/", {
+async function fetchStudents(
+    queryParams: QueryParams,
+    csrftoken: string | null
+) {
+    const query = `?page=${queryParams.pageNumber}&limit=${queryParams.limit}&search=${queryParams.search}&sortBy=${queryParams?.sortBy}`;
+    return await fetch(url + "/student/" + query, {
         method: "GET",
         credentials: "include",
         headers: {

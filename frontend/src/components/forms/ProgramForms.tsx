@@ -5,7 +5,6 @@ import type {
     AddProgramFormDataErrors,
 } from "../../types/programTypes";
 import programApi from "../../api/programApi";
-import type { College } from "../../types/collegeTypes";
 import collegeApi from "../../api/collegeApi";
 
 function ProgramForm({
@@ -22,17 +21,21 @@ function ProgramForm({
         name: "",
         college_code: "",
     });
-    const [collegeOptions, setCollegeOptions] = useState<College[]>([]);
+    const [collegeOptions, setCollegeOptions] = useState<string[]>([]);
+    const { auth } = useAuth()!;
 
     useEffect(() => {
         const fetchColleges = async () => {
-            const res = await collegeApi.fetchColleges(auth.csrftoken);
+            const res = await collegeApi.fetchCollegeCodes(auth.csrftoken);
             const resjson = await res.json();
-            setCollegeOptions(resjson.colleges);
+
+            setCollegeOptions(
+                resjson.codes.map((college: { code: string }) => college.code)
+            );
             console.log(resjson);
         };
         fetchColleges();
-    });
+    }, [auth.csrftoken]);
 
     useEffect(() => {
         setFormData(formDataOriginal);
@@ -44,8 +47,6 @@ function ProgramForm({
             name: [],
             college_code: [],
         });
-
-    const { auth } = useAuth()!;
 
     function handleChange(
         e:
@@ -120,8 +121,12 @@ function ProgramForm({
             >
                 <option value="">None</option>
 
-                {collegeOptions.map((college) => {
-                    return <option value={college.code}>{college.code}</option>;
+                {collegeOptions.map((collegeCode) => {
+                    return (
+                        <option key={collegeCode} value={collegeCode}>
+                            {collegeCode}
+                        </option>
+                    );
                 })}
             </select>
 
