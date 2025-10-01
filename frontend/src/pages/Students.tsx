@@ -25,6 +25,9 @@ function Students() {
     });
     // query params here?
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
+    const [targetDelete, setTargetDelete] = useState<string | null>(null);
+
     const [maxPage, setMaxPage] = useState<number>(1);
     const [queryParams, setQueryParams] = useState<QueryParams>({
         search: "",
@@ -60,6 +63,22 @@ function Students() {
                     formDataOriginal={formState.formData}
                     formType={formState.formType}
                 />
+            </Modal>
+            <Modal open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
+                <h1>Are you sure to delete {targetDelete}?</h1>
+                <button
+                    onClick={async () => {
+                        await studentApi.fetchDeleteStudent(
+                            auth.csrftoken,
+                            targetDelete as string
+                        );
+                        fetchStudents();
+                        setTargetDelete(null);
+                        setConfirmIsOpen(false);
+                    }}
+                >
+                    yes
+                </button>
             </Modal>
             <h1>Students</h1>
             <button
@@ -120,17 +139,8 @@ function Students() {
                                             <td style={{ width: "10px" }}>
                                                 <button
                                                     onClick={async () => {
-                                                        const response =
-                                                            prompt(
-                                                                "y to confirm"
-                                                            );
-                                                        if (response == "y") {
-                                                            await studentApi.fetchDeleteStudent(
-                                                                auth.csrftoken,
-                                                                s.id
-                                                            );
-                                                            fetchStudents();
-                                                        }
+                                                        setConfirmIsOpen(true);
+                                                        setTargetDelete(s.id);
                                                     }}
                                                 >
                                                     delete

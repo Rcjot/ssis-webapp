@@ -21,6 +21,9 @@ function Programs() {
         },
     });
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
+    const [targetDelete, setTargetDelete] = useState<string | null>(null);
+
     const [maxPage, setMaxPage] = useState<number>(1);
     const [queryParams, setQueryParams] = useState<QueryParams>({
         search: "",
@@ -54,6 +57,22 @@ function Programs() {
                     formDataOriginal={formState.formData}
                     formType={formState.formType}
                 />
+            </Modal>
+            <Modal open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
+                <h1>Are you sure to delete {targetDelete}?</h1>
+                <button
+                    onClick={async () => {
+                        await programApi.fetchDeleteProgram(
+                            auth.csrftoken,
+                            targetDelete as string
+                        );
+                        fetchPrograms();
+                        setTargetDelete(null);
+                        setConfirmIsOpen(false);
+                    }}
+                >
+                    yes
+                </button>
             </Modal>
             <h1>Programs</h1>
             <button
@@ -104,17 +123,8 @@ function Programs() {
                                             <td style={{ width: "10px" }}>
                                                 <button
                                                     onClick={async () => {
-                                                        const response =
-                                                            prompt(
-                                                                "y to confirm"
-                                                            );
-                                                        if (response == "y") {
-                                                            await programApi.fetchDeleteProgram(
-                                                                auth.csrftoken,
-                                                                p.code
-                                                            );
-                                                            fetchPrograms();
-                                                        }
+                                                        setConfirmIsOpen(true);
+                                                        setTargetDelete(p.code);
                                                     }}
                                                 >
                                                     delete

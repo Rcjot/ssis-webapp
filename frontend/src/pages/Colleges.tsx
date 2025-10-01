@@ -20,6 +20,9 @@ function Colleges() {
         },
     });
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
+    const [targetDelete, setTargetDelete] = useState<string | null>(null);
+
     const [maxPage, setMaxPage] = useState<number>(1);
     const [queryParams, setQueryParams] = useState<QueryParams>({
         search: "",
@@ -54,6 +57,22 @@ function Colleges() {
                     formDataOriginal={formState.formData}
                     formType={formState.formType}
                 />
+            </Modal>
+            <Modal open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
+                <h1>Are you sure to delete {targetDelete}?</h1>
+                <button
+                    onClick={async () => {
+                        await collegeApi.fetchDeleteCollege(
+                            auth.csrftoken,
+                            targetDelete as string
+                        );
+                        fetchColleges();
+                        setTargetDelete(null);
+                        setConfirmIsOpen(false);
+                    }}
+                >
+                    yes
+                </button>
             </Modal>
             <h1>Colleges</h1>
             <button
@@ -100,17 +119,8 @@ function Colleges() {
                                             <td style={{ width: "10px" }}>
                                                 <button
                                                     onClick={async () => {
-                                                        const response =
-                                                            prompt(
-                                                                "y to confirm"
-                                                            );
-                                                        if (response == "y") {
-                                                            await collegeApi.fetchDeleteCollege(
-                                                                auth.csrftoken,
-                                                                c.code
-                                                            );
-                                                            fetchColleges();
-                                                        }
+                                                        setConfirmIsOpen(true);
+                                                        setTargetDelete(c.code);
                                                     }}
                                                 >
                                                     delete
