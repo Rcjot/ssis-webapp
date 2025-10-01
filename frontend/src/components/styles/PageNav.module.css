@@ -1,0 +1,12 @@
+.pageNavContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 32px;
+}
+
+.liInput {
+    max-width: 100px;
+}

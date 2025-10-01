@@ -9,8 +9,6 @@ function Header() {
             <Link to={"/home"}>Home</Link>
             {auth.status === "authenticated" && (
                 <>
-                    <p>hello {auth.user?.username}</p>
-
                     <div>
                         <Link to={"/students"}>Students</Link>
                         <Link to={"/programs"}>Programs</Link>

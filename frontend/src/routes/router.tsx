@@ -40,6 +40,7 @@ function getRoutes() {
                 },
             ],
         },
+        { path: "/", element: <Home /> },
     ];
 }
 

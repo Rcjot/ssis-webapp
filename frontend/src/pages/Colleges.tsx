@@ -67,6 +67,7 @@ function Colleges() {
                     });
                     setIsOpen(true);
                 }}
+                className={styles.addButton}
             >
                 add
             </button>
@@ -81,53 +82,57 @@ function Colleges() {
                 ) : colleges.length === 0 ? (
                     <div>empty</div>
                 ) : (
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>name</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {colleges.map((c) => {
-                                return (
-                                    <tr key={c.code}>
-                                        <td>{c.code}</td>
-                                        <td>{c.name}</td>
-                                        <td style={{ width: "10px" }}>
-                                            <button
-                                                onClick={async () => {
-                                                    const response =
-                                                        prompt("y to confirm");
-                                                    if (response == "y") {
-                                                        await collegeApi.fetchDeleteCollege(
-                                                            auth.csrftoken,
-                                                            c.code
-                                                        );
-                                                        fetchColleges();
-                                                    }
-                                                }}
-                                            >
-                                                delete
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    setFormState(() => ({
-                                                        formType: "edit",
-                                                        formData: c,
-                                                    }));
-                                                    setIsOpen(true);
-                                                }}
-                                            >
-                                                edit
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                    <div className={styles.tableContainer}>
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {colleges.map((c) => {
+                                    return (
+                                        <tr key={c.code}>
+                                            <td>{c.code}</td>
+                                            <td>{c.name}</td>
+                                            <td style={{ width: "10px" }}>
+                                                <button
+                                                    onClick={async () => {
+                                                        const response =
+                                                            prompt(
+                                                                "y to confirm"
+                                                            );
+                                                        if (response == "y") {
+                                                            await collegeApi.fetchDeleteCollege(
+                                                                auth.csrftoken,
+                                                                c.code
+                                                            );
+                                                            fetchColleges();
+                                                        }
+                                                    }}
+                                                >
+                                                    delete
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        setFormState(() => ({
+                                                            formType: "edit",
+                                                            formData: c,
+                                                        }));
+                                                        setIsOpen(true);
+                                                    }}
+                                                >
+                                                    edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
                 <PageNav
                     pageNumber={queryParams.pageNumber}

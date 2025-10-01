@@ -1,0 +1,28 @@
+.queryBarContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.queryBarContainer form {
+    display: flex;
+    flex-direction: row;
+    margin: 0px;
+    flex: auto;
+    gap: 8px;
+    align-items: center;
+}
+
+.searchForm input {
+    flex: 1;
+}
+
+.sortForm select {
+    max-width: fit-content;
+}
+
+.sortForm {
+    display: inline;
+    float: ;
+}

@@ -20,6 +20,7 @@ async function fetchAddStudent(
     addStudentFormData: AddStudentFormData,
     csrftoken: string | null
 ) {
+    console.log(addStudentFormData);
     return await fetch(url + "/student/add", {
         method: "POST",
         credentials: "include",

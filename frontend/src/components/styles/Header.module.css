@@ -1,13 +1,17 @@
 header {
     display: flex;
     flex-direction: row;
-    gap: 32px;
+    gap: 1rem;
     justify-content: space-between;
+    align-items: center;
     padding: 12px;
+    overflow-x: auto;
+    /* max-width: 100%; */
 }
 
 header > div {
     display: flex;
     flex-direction: row;
-    gap: 32px;
+    gap: 5rem;
+    font-size: 1.5rem;
 }

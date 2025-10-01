@@ -1,5 +1,6 @@
 import type { QueryParams } from "../types/types";
 import { useState } from "react";
+import styles from "./styles/QueryBar.module.css";
 
 function QueryBar({
     setQueryParams,
@@ -24,13 +25,14 @@ function QueryBar({
     }
 
     return (
-        <>
-            <form onSubmit={handleSubmit}>
+        <div className={styles.queryBarContainer}>
+            <form className={styles.searchForm} onSubmit={handleSubmit}>
                 <label htmlFor="search"></label>
                 <input
                     type="text"
                     name="search"
                     value={queryFormData.search}
+                    className="form-control"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setQueryFormData((prev) => ({
                             ...prev,
@@ -40,8 +42,8 @@ function QueryBar({
                 />
                 <button>search</button>
             </form>
-            <form>
-                <label htmlFor="sortBy">sort by</label>
+            <form className={styles.sortForm}>
+                <label htmlFor="sort_query">sort by</label>
                 <select
                     className="form-select"
                     aria-label="sort query"
@@ -74,7 +76,7 @@ function QueryBar({
                     <option value="DESC">descending</option>
                 </select>
             </form>
-        </>
+        </div>
     );
 }
 

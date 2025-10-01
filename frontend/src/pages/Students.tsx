@@ -71,12 +71,13 @@ function Students() {
                             first_name: "",
                             last_name: "",
                             year_level: 1,
-                            gender: "",
+                            gender: "m",
                             program_code: "",
                         },
                     });
                     setIsOpen(true);
                 }}
+                className={styles.addButton}
             >
                 add
             </button>
@@ -93,63 +94,68 @@ function Students() {
                 ) : students.length === 0 ? (
                     <div>empty</div>
                 ) : (
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>firstName</th>
-                                <th>lastName</th>
-                                <th>year</th>
-                                <th>gender</th>
-                                <th>program</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {students.map((s) => {
-                                return (
-                                    <tr key={s.id}>
-                                        <td>{s.id}</td>
-                                        <td>{s.first_name}</td>
-                                        <td>{s.last_name}</td>
-                                        <td>{s.year_level}</td>
-                                        <td>{s.gender}</td>
-                                        <td>{s.program_code || "null"}</td>
-                                        <td style={{ width: "10px" }}>
-                                            <button
-                                                onClick={async () => {
-                                                    const response =
-                                                        prompt("y to confirm");
-                                                    if (response == "y") {
-                                                        await studentApi.fetchDeleteStudent(
-                                                            auth.csrftoken,
-                                                            s.id
-                                                        );
-                                                        fetchStudents();
-                                                    }
-                                                }}
-                                            >
-                                                delete
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    s.program_code =
-                                                        s.program_code || "";
-                                                    setFormState(() => ({
-                                                        formType: "edit",
-                                                        formData: s,
-                                                    }));
-                                                    setIsOpen(true);
-                                                }}
-                                            >
-                                                edit
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                    <div className={styles.tableContainer}>
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>firstName</th>
+                                    <th>lastName</th>
+                                    <th>year</th>
+                                    <th>gender</th>
+                                    <th>program</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {students.map((s) => {
+                                    return (
+                                        <tr key={s.id}>
+                                            <td>{s.id}</td>
+                                            <td>{s.first_name}</td>
+                                            <td>{s.last_name}</td>
+                                            <td>{s.year_level}</td>
+                                            <td>{s.gender}</td>
+                                            <td>{s.program_code || "null"}</td>
+                                            <td style={{ width: "10px" }}>
+                                                <button
+                                                    onClick={async () => {
+                                                        const response =
+                                                            prompt(
+                                                                "y to confirm"
+                                                            );
+                                                        if (response == "y") {
+                                                            await studentApi.fetchDeleteStudent(
+                                                                auth.csrftoken,
+                                                                s.id
+                                                            );
+                                                            fetchStudents();
+                                                        }
+                                                    }}
+                                                >
+                                                    delete
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        s.program_code =
+                                                            s.program_code ||
+                                                            "";
+                                                        setFormState(() => ({
+                                                            formType: "edit",
+                                                            formData: s,
+                                                        }));
+                                                        setIsOpen(true);
+                                                    }}
+                                                >
+                                                    edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
                 <PageNav
                     pageNumber={queryParams.pageNumber}

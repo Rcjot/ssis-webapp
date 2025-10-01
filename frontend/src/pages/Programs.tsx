@@ -68,6 +68,7 @@ function Programs() {
                     });
                     setIsOpen(true);
                 }}
+                className={styles.addButton}
             >
                 add
             </button>
@@ -83,57 +84,62 @@ function Programs() {
                 ) : programs.length === 0 ? (
                     <div>empty</div>
                 ) : (
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>code</th>
-                                <th>name</th>
-                                <th>college</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {programs.map((p) => {
-                                return (
-                                    <tr key={p.code}>
-                                        <td>{p.code}</td>
-                                        <td>{p.name}</td>
-                                        <td>{p.college_code || "null"}</td>
-                                        <td style={{ width: "10px" }}>
-                                            <button
-                                                onClick={async () => {
-                                                    const response =
-                                                        prompt("y to confirm");
-                                                    if (response == "y") {
-                                                        await programApi.fetchDeleteProgram(
-                                                            auth.csrftoken,
-                                                            p.code
-                                                        );
-                                                        fetchPrograms();
-                                                    }
-                                                }}
-                                            >
-                                                delete
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    p.college_code =
-                                                        p.college_code || "";
-                                                    setFormState(() => ({
-                                                        formType: "edit",
-                                                        formData: p,
-                                                    }));
-                                                    setIsOpen(true);
-                                                }}
-                                            >
-                                                edit
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                    <div className={styles.tableContainer}>
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>code</th>
+                                    <th>name</th>
+                                    <th>college</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {programs.map((p) => {
+                                    return (
+                                        <tr key={p.code}>
+                                            <td>{p.code}</td>
+                                            <td>{p.name}</td>
+                                            <td>{p.college_code || "null"}</td>
+                                            <td style={{ width: "10px" }}>
+                                                <button
+                                                    onClick={async () => {
+                                                        const response =
+                                                            prompt(
+                                                                "y to confirm"
+                                                            );
+                                                        if (response == "y") {
+                                                            await programApi.fetchDeleteProgram(
+                                                                auth.csrftoken,
+                                                                p.code
+                                                            );
+                                                            fetchPrograms();
+                                                        }
+                                                    }}
+                                                >
+                                                    delete
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        p.college_code =
+                                                            p.college_code ||
+                                                            "";
+                                                        setFormState(() => ({
+                                                            formType: "edit",
+                                                            formData: p,
+                                                        }));
+                                                        setIsOpen(true);
+                                                    }}
+                                                >
+                                                    edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
                 <PageNav
                     pageNumber={queryParams.pageNumber}

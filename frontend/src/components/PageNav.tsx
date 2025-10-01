@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { QueryParams } from "../types/types";
+import styles from "./styles/PageNav.module.css";
 
 function PageNav({
     pageNumber,
@@ -50,9 +51,12 @@ function PageNav({
     }
 
     return (
-        <>
-            <nav aria-label="Page navigation example">
-                <ul className="pagination">
+        <div className={styles.pageNavContainer}>
+            <nav
+                aria-label="Page navigation example"
+                className="d-flex flex-row align-items-center"
+            >
+                <ul className="pagination m-0">
                     <li className="page-item">
                         <button
                             className="page-link"
@@ -67,7 +71,7 @@ function PageNav({
                             Previous
                         </button>
                     </li>
-                    <li className="page-item">
+                    <li className={`page-item ${styles.liInput}`}>
                         <form
                             style={{ margin: "0px" }}
                             onSubmit={handlePageSubmit}
@@ -96,25 +100,28 @@ function PageNav({
                     </li>
                 </ul>
             </nav>
-            <label htmlFor="display_limit">display</label>
-            <select
-                className="form-select"
-                aria-label="display limit select"
-                name="display_limit"
-                id="display_limit"
-                value={limit}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                    setQueryParams((prev) => ({
-                        ...prev,
-                        limit: Number(e.target.value),
-                    }))
-                }
-            >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-            </select>
-        </>
+
+            <div className="d-flex flex-row align-items-center">
+                <label htmlFor="display_limit">display</label>
+                <select
+                    className="form-select"
+                    aria-label="display limit select"
+                    name="display_limit"
+                    id="display_limit"
+                    value={limit}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                        setQueryParams((prev) => ({
+                            ...prev,
+                            limit: Number(e.target.value),
+                        }))
+                    }
+                >
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+        </div>
     );
 }
 
