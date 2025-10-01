@@ -14,7 +14,7 @@ def get_colleges() :
     page = request.args.get('page', default=1, type= int)
     limit = request.args.get('limit', default = 10, type=int)
     offset = (page - 1) * limit
-    count = Colleges.get_count()
+    count = Colleges.get_count(search)
     total_pages = math.ceil(count/limit)
 
     if sortBy not in ['code', 'name'] :

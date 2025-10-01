@@ -55,16 +55,22 @@ class Programs() :
         return result
 
     @classmethod
-    def get_count(cls) :
-            db = get_db()
-            cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    def get_count(cls, search) :
+        db = get_db()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-            sql = "SELECT COUNT(*) FROM programs"
-            cursor.execute(sql)
-            result = cursor.fetchone()
-            cursor.close()
+        params = []
+        search = "%" + search + "%"
+        sql = "SELECT COUNT(*) FROM programs "
+        where = "WHERE code LIKE %s OR name LIKE %s OR college_code LIKE %s "
+        sql += where
+        params.extend([search, search, search])
 
-            return result['count']
+        cursor.execute(sql, params)
+        result = cursor.fetchone()
+        cursor.close()
+
+        return result['count']
 
     @classmethod
     def update(cls, target_code, code, name, college_code) :

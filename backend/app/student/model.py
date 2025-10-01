@@ -58,16 +58,29 @@ class Students() :
             print(f"error getting students: {e}")
     
     @classmethod
-    def get_count(cls) :
-            db = get_db()
-            cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    def get_count(cls, search) :
+        db = get_db()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-            sql = "SELECT COUNT(*) FROM students"
-            cursor.execute(sql)
-            result = cursor.fetchone()
-            cursor.close()
+        params = []
+        search = "%" + search + "%"
+        sql = "SELECT COUNT(*) FROM students "
+        where = """
+                WHERE id LIKE %s 
+                OR first_name LIKE %s 
+                OR last_name LIKE %s 
+                OR gender LIKE %s 
+                OR CAST(year_level AS TEXT) LIKE %s 
+                OR program_code LIKE %s 
+                """
+        sql += where
+        params.extend([search] * 6) 
+        
+        cursor.execute(sql, params)
+        result = cursor.fetchone()
+        cursor.close()
 
-            return result['count']
+        return result['count']
     
     @classmethod
     def update(cls, target_id, id, first_name, last_name, gender, year_level, program_code) :
