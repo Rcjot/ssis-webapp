@@ -5,6 +5,7 @@ import type {
     AddCollegeFormDataErrors,
 } from "../../types/collegeTypes";
 import collegeApi from "../../api/collegeApi";
+import styles from "./Forms.module.css";
 
 function CollegeForm({
     onSuccess,
@@ -67,29 +68,35 @@ function CollegeForm({
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="code">code</label>
-            <span>{formDataErrors.code.join(" ")}</span>
-            <input
-                type="text"
-                name="code"
-                className="form-control"
-                onChange={handleChange}
-                value={formData.code}
-                required
-            />
-            <label htmlFor="name">name</label>
-            <span>{formDataErrors.name.join(" ")}</span>
-            <input
-                type="text"
-                name="name"
-                className="form-control"
-                onChange={handleChange}
-                value={formData.name}
-                required
-            />
+        <form className={styles.formStyle} onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="code">code</label>
+                <span>{formDataErrors.code.join(" ")}</span>
+                <input
+                    type="text"
+                    name="code"
+                    className="form-control"
+                    onChange={handleChange}
+                    value={formData.code}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="name">name</label>
+                <span>{formDataErrors.name.join(" ")}</span>
+                <input
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    onChange={handleChange}
+                    value={formData.name}
+                    required
+                />
+            </div>
 
-            <button type="submit">{formType} College</button>
+            <button type="submit">
+                {formType === "edit" ? "save" : `${formType} college`}
+            </button>
         </form>
     );
 }

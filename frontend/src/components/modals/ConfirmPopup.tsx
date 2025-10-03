@@ -18,10 +18,12 @@ function ConfirmPopup({
         <>
             <div className={styles.overlayStyles} />
             <div className={styles.modalStyles}>
-                {children}
-                <div className="d-flex gap-4">
-                    <button onClick={onClose}>cancel</button>
-                    <button onClick={onConfirm}>confirm</button>
+                <div className={styles.modalContent}>
+                    {children}
+                    <div className="d-flex gap-4">
+                        <button onClick={onClose}>cancel</button>
+                        <button onClick={onConfirm}>confirm</button>
+                    </div>
                 </div>
             </div>
         </>,

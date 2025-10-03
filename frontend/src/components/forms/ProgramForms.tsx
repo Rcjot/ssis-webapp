@@ -6,6 +6,7 @@ import type {
 } from "../../types/programTypes";
 import programApi from "../../api/programApi";
 import collegeApi from "../../api/collegeApi";
+import styles from "./Forms.module.css";
 
 function ProgramForm({
     onSuccess,
@@ -90,49 +91,57 @@ function ProgramForm({
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="code">code</label>
-            <span>{formDataErrors.code.join(" ")}</span>
-            <input
-                type="text"
-                name="code"
-                className="form-control"
-                onChange={handleChange}
-                value={formData.code}
-                required
-            />
-            <label htmlFor="name">name</label>
-            <span>{formDataErrors.name.join(" ")}</span>
-            <input
-                type="text"
-                name="name"
-                className="form-control"
-                onChange={handleChange}
-                value={formData.name}
-                required
-            />
-            <label htmlFor="college_code">college code</label>
-            <span>{formDataErrors.college_code.join(" ")}</span>
-            <select
-                className="form-select"
-                aria-label="college select"
-                name="college_code"
-                id="college_code"
-                value={formData.college_code}
-                onChange={handleChange}
-            >
-                <option value="">None</option>
+        <form className={styles.formStyle} onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="code">code</label>
+                <span>{formDataErrors.code.join(" ")}</span>
+                <input
+                    type="text"
+                    name="code"
+                    className="form-control"
+                    onChange={handleChange}
+                    value={formData.code}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="name">name</label>
+                <span>{formDataErrors.name.join(" ")}</span>
+                <input
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    onChange={handleChange}
+                    value={formData.name}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="college_code">college code</label>
+                <span>{formDataErrors.college_code.join(" ")}</span>
+                <select
+                    className="form-select"
+                    aria-label="college select"
+                    name="college_code"
+                    id="college_code"
+                    value={formData.college_code}
+                    onChange={handleChange}
+                >
+                    <option value="">None</option>
 
-                {collegeOptions.map((collegeCode) => {
-                    return (
-                        <option key={collegeCode} value={collegeCode}>
-                            {collegeCode}
-                        </option>
-                    );
-                })}
-            </select>
+                    {collegeOptions.map((collegeCode) => {
+                        return (
+                            <option key={collegeCode} value={collegeCode}>
+                                {collegeCode}
+                            </option>
+                        );
+                    })}
+                </select>
+            </div>
 
-            <button type="submit">{formType} Program</button>
+            <button type="submit">
+                {formType === "edit" ? "save" : `${formType} program`}
+            </button>
         </form>
     );
 }

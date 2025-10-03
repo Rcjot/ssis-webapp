@@ -3,10 +3,13 @@ import styles from "./styles/Header.module.css";
 import { useState } from "react";
 import { useAuth } from "../ context/AuthContext";
 import ConfirmPopup from "./modals/ConfirmPopup";
+import homeIcon from "../assets/home.svg";
+import { useLocation } from "react-router-dom";
 
 function Header() {
     const { logout, auth } = useAuth()!;
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const location = useLocation();
 
     return (
         <header className={styles.header}>
@@ -22,13 +25,46 @@ function Header() {
             >
                 <p className="text-center">Are you sure to log out?</p>
             </ConfirmPopup>
-            <Link to={"/home"}>Home</Link>
+            <Link to={"/home"}>
+                <img
+                    style={{ height: "32px", width: "32px" }}
+                    src={homeIcon}
+                    alt="home"
+                />
+            </Link>
             {auth.status === "authenticated" && (
                 <>
                     <div>
-                        <Link to={"/students"}>Students</Link>
-                        <Link to={"/programs"}>Programs</Link>
-                        <Link to={"/colleges"}>Colleges</Link>
+                        <Link
+                            className={
+                                location.pathname === "/students"
+                                    ? styles.current
+                                    : ""
+                            }
+                            to={"/students"}
+                        >
+                            Students
+                        </Link>
+                        <Link
+                            className={
+                                location.pathname === "/programs"
+                                    ? styles.current
+                                    : ""
+                            }
+                            to={"/programs"}
+                        >
+                            Programs
+                        </Link>
+                        <Link
+                            className={
+                                location.pathname === "/colleges"
+                                    ? styles.current
+                                    : ""
+                            }
+                            to={"/colleges"}
+                        >
+                            Colleges
+                        </Link>
                     </div>
                 </>
             )}

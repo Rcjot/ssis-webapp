@@ -6,6 +6,7 @@ import type {
 } from "../../types/studentTypes";
 import studentApi from "../../api/studentApi";
 import programApi from "../../api/programApi";
+import styles from "./Forms.module.css";
 
 function StudentForm({
     onSuccess,
@@ -95,83 +96,98 @@ function StudentForm({
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="id">id</label>
-            <span>{formDataErrors.id.join(" ")}</span>
-            <input
-                type="text"
-                name="id"
-                className="form-control"
-                onChange={handleChange}
-                value={formData.id}
-                required
-            />
-            <label htmlFor="first_name">first name</label>
-            <span>{formDataErrors.first_name.join(" ")}</span>
-            <input
-                type="text"
-                name="first_name"
-                className="form-control"
-                onChange={handleChange}
-                value={formData.first_name}
-                required
-            />
-            <label htmlFor="last_name">last name</label>
-            <span>{formDataErrors.last_name.join(" ")}</span>
-            <input
-                type="text"
-                name="last_name"
-                className="form-control"
-                onChange={handleChange}
-                value={formData.last_name}
-                required
-            />
-            <label htmlFor="year_level">year level</label>
-            <span>{formDataErrors.year_level.join(" ")}</span>
-            <input
-                type="number"
-                name="year_level"
-                className="form-control"
-                onChange={handleChange}
-                value={formData.year_level}
-                min={1}
-                max={5}
-                required
-            />
-            <label htmlFor="gender">gender</label>
-            <span>{formDataErrors.gender.join(" ")}</span>
-            <select
-                className="form-select"
-                aria-label="gender select"
-                name="gender"
-                id="gender"
-                value={formData.gender}
-                onChange={handleChange}
-            >
-                <option value="m">m</option>
-                <option value="f">f</option>
-            </select>
-            <label htmlFor="program_code">program</label>
-            <span>{formDataErrors.program_code.join(" ")}</span>
-            <select
-                className="form-select"
-                aria-label="program select"
-                name="program_code"
-                id="program_code"
-                value={formData.program_code}
-                onChange={handleChange}
-            >
-                <option value="">None</option>
+        <form className={styles.formStyle} onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="id">id</label>
+                <span>{formDataErrors.id.join(" ")}</span>
+                <input
+                    type="text"
+                    name="id"
+                    className="form-control"
+                    onChange={handleChange}
+                    value={formData.id}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="first_name">first name</label>
+                <span>{formDataErrors.first_name.join(" ")}</span>
+                <input
+                    type="text"
+                    name="first_name"
+                    className="form-control"
+                    onChange={handleChange}
+                    value={formData.first_name}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="last_name">last name</label>
+                <span>{formDataErrors.last_name.join(" ")}</span>
+                <input
+                    type="text"
+                    name="last_name"
+                    className="form-control"
+                    onChange={handleChange}
+                    value={formData.last_name}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="year_level">year level</label>
+                <span>{formDataErrors.year_level.join(" ")}</span>
+                <input
+                    type="number"
+                    name="year_level"
+                    className="form-control"
+                    onChange={handleChange}
+                    value={formData.year_level}
+                    min={1}
+                    max={5}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="gender">gender</label>
+                <span>{formDataErrors.gender.join(" ")}</span>
+                <select
+                    className="form-select"
+                    aria-label="gender select"
+                    name="gender"
+                    id="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                >
+                    <option value="m">m</option>
+                    <option value="f">f</option>
+                </select>
+            </div>
+            <div>
+                <label htmlFor="program_code">program</label>
+                <span>{formDataErrors.program_code.join(" ")}</span>
+                <select
+                    className="form-select"
+                    aria-label="program select"
+                    name="program_code"
+                    id="program_code"
+                    value={formData.program_code}
+                    onChange={handleChange}
+                >
+                    <option value="">None</option>
 
-                {programOptions.map((programCode) => {
-                    return (
-                        <option key={programCode} value={programCode}>
-                            {programCode}
-                        </option>
-                    );
-                })}
-            </select>
-            <button type="submit">{formType} student</button>
+                    {programOptions.map((programCode) => {
+                        return (
+                            <option key={programCode} value={programCode}>
+                                {programCode}
+                            </option>
+                        );
+                    })}
+                </select>
+            </div>
+
+            <button type="submit">
+                {formType === "edit" ? "save" : `${formType} student`}
+            </button>
         </form>
     );
 }

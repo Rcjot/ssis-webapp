@@ -1,0 +1,11 @@
+.formStyle {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.formStyle > button {
+    margin-top: 1em;
+    width: fit-content;
+    align-self: center;
+}

@@ -4,10 +4,13 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
-    padding: 50px;
     z-index: 1000;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 12px;
+}
+
+.modalContent {
+    padding: 30px;
 }
 
 .overlayStyles {

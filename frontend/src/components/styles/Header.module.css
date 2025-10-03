@@ -15,3 +15,30 @@ header > div {
     gap: 5rem;
     font-size: 1.5rem;
 }
+
+.current {
+    position: relative;
+    color: #232438;
+}
+.current::after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    border-bottom: 2px solid black;
+    width: 0px;
+    height: 2px;
+    animation-name: underline-animation;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+@keyframes underline-animation {
+    from {
+        width: 0px;
+    }
+    to {
+        width: 100%;
+    }
+}

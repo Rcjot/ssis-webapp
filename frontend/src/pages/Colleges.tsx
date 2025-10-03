@@ -10,6 +10,8 @@ import CollegeForm from "../components/forms/CollegeForms";
 import type { QueryParams } from "../types/types";
 import QueryBar from "../components/QueryBar";
 import ConfirmPopup from "../components/modals/ConfirmPopup";
+import deleteIcon from "../assets/delete.svg";
+import editIcon from "../assets/edit.svg";
 
 function Colleges() {
     const [colleges, setColleges] = useState<College[] | null>(null);
@@ -123,25 +125,48 @@ function Colleges() {
                                             <td>{c.code}</td>
                                             <td>{c.name}</td>
                                             <td style={{ width: "10px" }}>
-                                                <button
-                                                    onClick={async () => {
-                                                        setConfirmIsOpen(true);
-                                                        setTargetDelete(c.code);
+                                                <div
+                                                    style={{
+                                                        display: "flex",
+                                                        width: "fit-content",
+                                                        marginLeft: "auto",
                                                     }}
                                                 >
-                                                    delete
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        setFormState(() => ({
-                                                            formType: "edit",
-                                                            formData: c,
-                                                        }));
-                                                        setIsOpen(true);
-                                                    }}
-                                                >
-                                                    edit
-                                                </button>
+                                                    <button
+                                                        className="buttonIcon"
+                                                        onClick={async () => {
+                                                            setConfirmIsOpen(
+                                                                true
+                                                            );
+                                                            setTargetDelete(
+                                                                c.code
+                                                            );
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={deleteIcon}
+                                                            alt="delete"
+                                                        />
+                                                    </button>
+                                                    <button
+                                                        className="buttonIcon"
+                                                        onClick={() => {
+                                                            setFormState(
+                                                                () => ({
+                                                                    formType:
+                                                                        "edit",
+                                                                    formData: c,
+                                                                })
+                                                            );
+                                                            setIsOpen(true);
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={editIcon}
+                                                            alt="edit"
+                                                        />
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     );
