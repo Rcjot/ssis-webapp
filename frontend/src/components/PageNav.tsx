@@ -59,7 +59,9 @@ function PageNav({
                 <ul className="pagination m-0">
                     <li className="page-item">
                         <button
-                            className="page-link"
+                            className={`page-link ${
+                                pageNumber === 1 ? "disabled" : ""
+                            }`}
                             onClick={() => {
                                 if (pageNumber == 1) return;
                                 setQueryParams((prev) => ({
@@ -86,7 +88,9 @@ function PageNav({
                     </li>
                     <li className="page-item">
                         <button
-                            className="page-link"
+                            className={`page-link ${
+                                pageNumber === maxPage ? "disabled" : ""
+                            }`}
                             onClick={() => {
                                 if (pageNumber == maxPage) return;
                                 setQueryParams((prev) => ({
