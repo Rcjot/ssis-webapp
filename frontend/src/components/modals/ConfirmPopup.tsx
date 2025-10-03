@@ -2,26 +2,31 @@ import type React from "react";
 import ReactDom from "react-dom";
 import styles from "./Modal.module.css";
 
-function Modal({
+function ConfirmPopup({
     open,
-    onClose,
     children,
+    onConfirm,
+    onClose,
 }: {
     open: boolean;
-    onClose: () => void;
     children: React.ReactNode;
+    onConfirm: () => void;
+    onClose: () => void | (() => Promise<void>);
 }) {
     if (!open) return null;
     return ReactDom.createPortal(
         <>
             <div className={styles.overlayStyles} />
             <div className={styles.modalStyles}>
-                <button onClick={onClose}>close</button>
                 {children}
+                <div className="d-flex gap-4">
+                    <button onClick={onClose}>cancel</button>
+                    <button onClick={onConfirm}>confirm</button>
+                </div>
             </div>
         </>,
         document.getElementById("portal")!
     );
 }
 
-export default Modal;
+export default ConfirmPopup;

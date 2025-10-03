@@ -96,6 +96,7 @@ function ProgramForm({
             <input
                 type="text"
                 name="code"
+                className="form-control"
                 onChange={handleChange}
                 value={formData.code}
                 required
@@ -105,6 +106,7 @@ function ProgramForm({
             <input
                 type="text"
                 name="name"
+                className="form-control"
                 onChange={handleChange}
                 value={formData.name}
                 required

@@ -9,6 +9,7 @@ import Modal from "../components/modals/Modal";
 import CollegeForm from "../components/forms/CollegeForms";
 import type { QueryParams } from "../types/types";
 import QueryBar from "../components/QueryBar";
+import ConfirmPopup from "../components/modals/ConfirmPopup";
 
 function Colleges() {
     const [colleges, setColleges] = useState<College[] | null>(null);
@@ -58,22 +59,27 @@ function Colleges() {
                     formType={formState.formType}
                 />
             </Modal>
-            <Modal open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
-                <h1>Are you sure to delete {targetDelete}?</h1>
-                <button
-                    onClick={async () => {
-                        await collegeApi.fetchDeleteCollege(
-                            auth.csrftoken,
-                            targetDelete as string
-                        );
-                        fetchColleges();
-                        setTargetDelete(null);
-                        setConfirmIsOpen(false);
-                    }}
-                >
-                    yes
-                </button>
-            </Modal>
+            <ConfirmPopup
+                open={confirmIsOpen}
+                onConfirm={async () => {
+                    await collegeApi.fetchDeleteCollege(
+                        auth.csrftoken,
+                        targetDelete as string
+                    );
+                    fetchColleges();
+                    setTargetDelete(null);
+                    setConfirmIsOpen(false);
+                    if (queryParams.pageNumber > 1 && colleges?.length === 1) {
+                        setQueryParams((prev) => ({
+                            ...prev,
+                            pageNumber: prev.pageNumber - 1,
+                        }));
+                    }
+                }}
+                onClose={() => setConfirmIsOpen(false)}
+            >
+                <p>Are you sure to delete {targetDelete}?</p>
+            </ConfirmPopup>
             <h1>Colleges</h1>
             <button
                 onClick={() => {

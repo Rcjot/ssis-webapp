@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styles from "./styles/Header.module.css";
 import { useState } from "react";
 import { useAuth } from "../ context/AuthContext";
-import Modal from "./modals/Modal";
+import ConfirmPopup from "./modals/ConfirmPopup";
 
 function Header() {
     const { logout, auth } = useAuth()!;
@@ -10,19 +10,18 @@ function Header() {
 
     return (
         <header className={styles.header}>
-            <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-                <div>
-                    <h1>Are you sure to log out?</h1>
-                    <button
-                        onClick={() => {
-                            logout();
-                            setIsOpen(false);
-                        }}
-                    >
-                        Confirm
-                    </button>
-                </div>
-            </Modal>{" "}
+            <ConfirmPopup
+                open={isOpen}
+                onConfirm={() => {
+                    logout();
+                    setIsOpen(false);
+                }}
+                onClose={() => {
+                    setIsOpen(false);
+                }}
+            >
+                <p className="text-center">Are you sure to log out?</p>
+            </ConfirmPopup>
             <Link to={"/home"}>Home</Link>
             {auth.status === "authenticated" && (
                 <>

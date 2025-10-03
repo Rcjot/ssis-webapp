@@ -9,6 +9,7 @@ import ProgramForm from "../components/forms/ProgramForms";
 import Modal from "../components/modals/Modal";
 import type { QueryParams } from "../types/types";
 import QueryBar from "../components/QueryBar";
+import ConfirmPopup from "../components/modals/ConfirmPopup";
 
 function Programs() {
     const [programs, setPrograms] = useState<Program[] | null>(null);
@@ -58,22 +59,27 @@ function Programs() {
                     formType={formState.formType}
                 />
             </Modal>
-            <Modal open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
-                <h1>Are you sure to delete {targetDelete}?</h1>
-                <button
-                    onClick={async () => {
-                        await programApi.fetchDeleteProgram(
-                            auth.csrftoken,
-                            targetDelete as string
-                        );
-                        fetchPrograms();
-                        setTargetDelete(null);
-                        setConfirmIsOpen(false);
-                    }}
-                >
-                    yes
-                </button>
-            </Modal>
+            <ConfirmPopup
+                open={confirmIsOpen}
+                onClose={() => setConfirmIsOpen(false)}
+                onConfirm={async () => {
+                    await programApi.fetchDeleteProgram(
+                        auth.csrftoken,
+                        targetDelete as string
+                    );
+                    fetchPrograms();
+                    setTargetDelete(null);
+                    setConfirmIsOpen(false);
+                    if (queryParams.pageNumber > 1 && programs?.length === 1) {
+                        setQueryParams((prev) => ({
+                            ...prev,
+                            pageNumber: prev.pageNumber - 1,
+                        }));
+                    }
+                }}
+            >
+                <p>Are you sure to delete {targetDelete}?</p>
+            </ConfirmPopup>
             <h1>Programs</h1>
             <button
                 onClick={() => {

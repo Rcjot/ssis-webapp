@@ -9,6 +9,7 @@ import Modal from "../components/modals/Modal";
 import StudentForm from "../components/forms/StudentForms";
 import type { QueryParams } from "../types/types";
 import QueryBar from "../components/QueryBar";
+import ConfirmPopup from "../components/modals/ConfirmPopup";
 
 function Students() {
     const [students, setStudents] = useState<Student[] | null>(null);
@@ -64,22 +65,27 @@ function Students() {
                     formType={formState.formType}
                 />
             </Modal>
-            <Modal open={confirmIsOpen} onClose={() => setConfirmIsOpen(false)}>
-                <h1>Are you sure to delete {targetDelete}?</h1>
-                <button
-                    onClick={async () => {
-                        await studentApi.fetchDeleteStudent(
-                            auth.csrftoken,
-                            targetDelete as string
-                        );
-                        fetchStudents();
-                        setTargetDelete(null);
-                        setConfirmIsOpen(false);
-                    }}
-                >
-                    yes
-                </button>
-            </Modal>
+            <ConfirmPopup
+                open={confirmIsOpen}
+                onClose={() => setConfirmIsOpen(false)}
+                onConfirm={async () => {
+                    await studentApi.fetchDeleteStudent(
+                        auth.csrftoken,
+                        targetDelete as string
+                    );
+                    fetchStudents();
+                    setTargetDelete(null);
+                    setConfirmIsOpen(false);
+                    if (queryParams.pageNumber > 1 && students?.length === 1) {
+                        setQueryParams((prev) => ({
+                            ...prev,
+                            pageNumber: prev.pageNumber - 1,
+                        }));
+                    }
+                }}
+            >
+                <p>Are you sure to delete {targetDelete}?</p>
+            </ConfirmPopup>
             <h1>Students</h1>
             <button
                 onClick={() => {

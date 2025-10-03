@@ -101,6 +101,7 @@ function StudentForm({
             <input
                 type="text"
                 name="id"
+                className="form-control"
                 onChange={handleChange}
                 value={formData.id}
                 required
@@ -110,6 +111,7 @@ function StudentForm({
             <input
                 type="text"
                 name="first_name"
+                className="form-control"
                 onChange={handleChange}
                 value={formData.first_name}
                 required
@@ -119,6 +121,7 @@ function StudentForm({
             <input
                 type="text"
                 name="last_name"
+                className="form-control"
                 onChange={handleChange}
                 value={formData.last_name}
                 required
@@ -128,6 +131,7 @@ function StudentForm({
             <input
                 type="number"
                 name="year_level"
+                className="form-control"
                 onChange={handleChange}
                 value={formData.year_level}
                 min={1}
