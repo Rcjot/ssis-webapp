@@ -9,3 +9,12 @@
     width: fit-content;
     align-self: center;
 }
+
+.formStyle > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.formStyle > div > span {
+    color: rgb(122, 17, 17);
+}

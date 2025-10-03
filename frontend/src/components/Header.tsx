@@ -25,15 +25,16 @@ function Header() {
             >
                 <p className="text-center">Are you sure to log out?</p>
             </ConfirmPopup>
-            <Link to={"/home"}>
-                <img
-                    style={{ height: "32px", width: "32px" }}
-                    src={homeIcon}
-                    alt="home"
-                />
-            </Link>
+
             {auth.status === "authenticated" && (
                 <>
+                    <Link to={"/home"}>
+                        <img
+                            style={{ height: "32px", width: "32px" }}
+                            src={homeIcon}
+                            alt="home"
+                        />
+                    </Link>
                     <div>
                         <Link
                             className={
@@ -71,7 +72,9 @@ function Header() {
             {auth.status === "authenticated" ? (
                 <button onClick={() => setIsOpen(true)}>logout</button>
             ) : (
-                <Link to="/login">Login</Link>
+                <Link to="/login" style={{ marginLeft: "auto" }}>
+                    Login
+                </Link>
             )}
         </header>
     );
