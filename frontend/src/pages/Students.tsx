@@ -37,7 +37,7 @@ function Students() {
         sortBy: "none",
         direction: "ASC",
         pageNumber: 1,
-        limit: 5,
+        limit: 10,
     });
 
     const { auth } = useAuth()!;
@@ -48,7 +48,7 @@ function Students() {
         const resjson = await res.json();
         console.log(resjson);
         setStudents(resjson.students);
-        setMaxPage(resjson.total_pages);
+        setMaxPage(Math.max(1, resjson.total_pages));
     }, [queryParams, auth.csrftoken]);
 
     useEffect(() => {

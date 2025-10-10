@@ -32,7 +32,7 @@ function Colleges() {
         sortBy: "none",
         direction: "ASC",
         pageNumber: 1,
-        limit: 5,
+        limit: 10,
     });
 
     const { auth } = useAuth()!;
@@ -41,8 +41,7 @@ function Colleges() {
         const res = await collegeApi.fetchColleges(queryParams, auth.csrftoken);
         const resjson = await res.json();
         setColleges(resjson.colleges);
-        setMaxPage(resjson.total_pages);
-        console.log(resjson);
+        setMaxPage(Math.max(1, resjson.total_pages));
     }, [queryParams, auth.csrftoken]);
 
     useEffect(() => {

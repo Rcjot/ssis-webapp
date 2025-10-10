@@ -22,6 +22,12 @@ function QueryBar({
             sortBy: queryFormData.sortBy,
             direction: queryFormData.direction,
         }));
+        if (queryFormData.search != "") {
+            setQueryParams((prev) => ({
+                ...prev,
+                pageNumber: 1,
+            }));
+        }
     }
 
     return (
