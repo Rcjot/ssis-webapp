@@ -12,6 +12,7 @@ import QueryBar from "../components/QueryBar";
 import ConfirmPopup from "../components/modals/ConfirmPopup";
 import deleteIcon from "../assets/delete.svg";
 import editIcon from "../assets/edit.svg";
+import { toast } from "react-toastify";
 
 function Programs() {
     const [programs, setPrograms] = useState<Program[] | null>(null);
@@ -73,6 +74,7 @@ function Programs() {
                     );
                     fetchPrograms();
                     setTargetDelete(null);
+                    toast.success(`delete ${targetDelete} successful`);
                     setConfirmIsOpen(false);
                     if (queryParams.pageNumber > 1 && programs?.length === 1) {
                         setQueryParams((prev) => ({

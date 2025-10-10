@@ -12,6 +12,7 @@ import QueryBar from "../components/QueryBar";
 import ConfirmPopup from "../components/modals/ConfirmPopup";
 import deleteIcon from "../assets/delete.svg";
 import editIcon from "../assets/edit.svg";
+import { toast } from "react-toastify";
 
 function Students() {
     const [students, setStudents] = useState<Student[] | null>(null);
@@ -78,6 +79,7 @@ function Students() {
                         targetDelete as string
                     );
                     fetchStudents();
+                    toast.success(`delete ${targetDelete} successful`);
                     setTargetDelete(null);
                     setConfirmIsOpen(false);
                     if (queryParams.pageNumber > 1 && students?.length === 1) {

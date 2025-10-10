@@ -5,6 +5,7 @@ import formStyles from "../components/forms/Forms.module.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../ context/AuthContext";
 import authApi from "../api/authApi";
+import { toast } from "react-toastify";
 
 function Signup() {
     const [formData, setFormData] = useState<SignupFormData>({
@@ -48,7 +49,7 @@ function Signup() {
         if (!res.ok) {
             setFormDataErrors(resjson.error);
         } else {
-            alert("registered");
+            toast.success("registered");
         }
     }
 

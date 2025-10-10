@@ -3,6 +3,7 @@ import { AuthContext } from "../ context/AuthContext";
 import type { AuthType, LoginFormDataErrors } from "../types/authTypes";
 import authApi from "../api/authApi";
 import type { LoginFormData } from "../types/authTypes";
+import { toast } from "react-toastify";
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
     const [auth, setAuth] = useState<AuthType>({
@@ -47,7 +48,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
                     csrftoken: auth.csrftoken,
                     user: resjson.user,
                 }));
-                alert("login successful");
+                toast.success("login successful");
                 return true;
             } else {
                 setFormDataErrors(resjson.error);
@@ -65,7 +66,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
                 status: "unauthenticated",
                 user: null,
             }));
-            alert("logout successful");
+            toast.success("logout successful");
         }
     }, []);
 

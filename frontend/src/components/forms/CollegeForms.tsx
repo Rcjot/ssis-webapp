@@ -6,6 +6,7 @@ import type {
 } from "../../types/collegeTypes";
 import collegeApi from "../../api/collegeApi";
 import styles from "./Forms.module.css";
+import { toast } from "react-toastify";
 
 function CollegeForm({
     onSuccess,
@@ -62,7 +63,7 @@ function CollegeForm({
         if (!res.ok) {
             setFormDataErrors(resjson.error);
         } else {
-            alert(`${formType}ed College`);
+            toast.success(`${formType}ed College`);
             onSuccess();
         }
     }

@@ -7,6 +7,7 @@ import type {
 import programApi from "../../api/programApi";
 import collegeApi from "../../api/collegeApi";
 import styles from "./Forms.module.css";
+import { toast } from "react-toastify";
 
 function ProgramForm({
     onSuccess,
@@ -85,7 +86,7 @@ function ProgramForm({
         if (!res.ok) {
             setFormDataErrors(resjson.error);
         } else {
-            alert(`${formType}ed Program`);
+            toast.success(`${formType}ed Program`);
             onSuccess();
         }
     }
