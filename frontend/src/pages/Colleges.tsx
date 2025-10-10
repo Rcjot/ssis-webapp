@@ -27,6 +27,7 @@ function Colleges() {
     const [targetDelete, setTargetDelete] = useState<string | null>(null);
 
     const [maxPage, setMaxPage] = useState<number>(1);
+    const [totalCount, setTotalCount] = useState<number>(0);
     const [queryParams, setQueryParams] = useState<QueryParams>({
         search: "",
         sortBy: "none",
@@ -41,6 +42,7 @@ function Colleges() {
         const res = await collegeApi.fetchColleges(queryParams, auth.csrftoken);
         const resjson = await res.json();
         setColleges(resjson.colleges);
+        setTotalCount(resjson.total_count);
         setMaxPage(Math.max(1, resjson.total_pages));
     }, [queryParams, auth.csrftoken]);
 
@@ -102,6 +104,7 @@ function Colleges() {
                 <option value="code">code</option>
                 <option value="name">name</option>
             </QueryBar>
+            {colleges && <p>total count : {totalCount}</p>}
             <div className={styles.contentContainer}>
                 {colleges == null ? (
                     <div>loading...</div>

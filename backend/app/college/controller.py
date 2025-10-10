@@ -14,8 +14,9 @@ def get_colleges() :
     page = request.args.get('page', default=1, type= int)
     limit = request.args.get('limit', default = 10, type=int)
     offset = (page - 1) * limit
-    count = Colleges.get_count(search)
-    total_pages = math.ceil(count/limit)
+    result_count = Colleges.get_count(search)
+    total_count = Colleges.get_all_count()
+    total_pages = math.ceil(result_count/limit)
 
     if sortBy not in ['code', 'name'] :
         sortBy = 'none'
@@ -23,11 +24,12 @@ def get_colleges() :
     if direction not in ['ASC', 'DESC'] :
         direction = 'ASC'
 
-    print(search, sortBy, direction, page, limit, offset, count, total_pages)
+    print(search, sortBy, direction, page, limit, offset, result_count, total_pages)
 
     return jsonify(                   
                    limit=limit, 
-                   count=count,
+                   count=result_count,
+                   total_count=total_count,
                    page=page, 
                    total_pages=total_pages,
                    colleges=Colleges.all(limit, offset, search, sortBy, direction))

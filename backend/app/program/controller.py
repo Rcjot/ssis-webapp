@@ -15,8 +15,9 @@ def get_programs() :
     page = request.args.get('page', default=1, type=int)
     limit = request.args.get('limit', default = 10, type=int)
     offset = (page - 1) * limit
-    count = Programs.get_count(search)
-    total_pages = math.ceil(count / limit)
+    result_count = Programs.get_count(search)
+    total_count = Programs.get_all_count()
+    total_pages = math.ceil(result_count / limit)
 
     if sortBy not in ['code', 'name', 'college_code'] :
         sortBy = 'none'
@@ -26,7 +27,8 @@ def get_programs() :
         
     return jsonify(
                    limit=limit, 
-                   count=count,
+                   count=result_count,
+                   total_count= total_count,
                    page=page, 
                    total_pages=total_pages,
                    programs=Programs.all(limit, offset, search, sortBy, direction))

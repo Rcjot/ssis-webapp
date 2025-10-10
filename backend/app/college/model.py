@@ -40,6 +40,16 @@ class Colleges() :
 
         return result
 
+    @classmethod
+    def get_all_count(cls) :
+        db = get_db()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        sql = "SELECT COUNT(*) FROM colleges"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+
+        return result['count']
+    
     @classmethod 
     def all_codes(cls) :
         db = get_db()

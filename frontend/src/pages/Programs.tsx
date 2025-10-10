@@ -28,6 +28,7 @@ function Programs() {
     const [targetDelete, setTargetDelete] = useState<string | null>(null);
 
     const [maxPage, setMaxPage] = useState<number>(1);
+    const [totalCount, setTotalCount] = useState<number>(0);
     const [queryParams, setQueryParams] = useState<QueryParams>({
         search: "",
         sortBy: "none",
@@ -42,6 +43,7 @@ function Programs() {
         const resjson = await res.json();
         console.log(resjson.programs);
         setPrograms(resjson.programs);
+        setTotalCount(resjson.total_count);
         setMaxPage(Math.max(1, resjson.total_pages));
     }, [queryParams, auth.csrftoken]);
 
@@ -105,6 +107,7 @@ function Programs() {
                 <option value="name">name</option>
                 <option value="college_code">college</option>
             </QueryBar>
+            {programs && <p>total count : {totalCount}</p>}
             <div className={styles.contentContainer}>
                 {programs == null ? (
                     <div>loading...</div>

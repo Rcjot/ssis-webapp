@@ -16,8 +16,9 @@ def get_students() :
     page = request.args.get('page', default=1, type=int)
     limit = request.args.get('limit', default = 10, type=int)
     offset = (page - 1) * limit
-    count = Students.get_count(search)
-    total_pages = math.ceil(count/limit)
+    result_count = Students.get_count(search)
+    total_count = Students.get_all_count()
+    total_pages = math.ceil(result_count/limit)
 
     if sortBy not in ['id','first_name', 'last_name','gender', 'year_level', 'program_code'] :
         sortBy = 'none'
@@ -27,7 +28,8 @@ def get_students() :
         
 
     return jsonify(limit=limit, 
-                   count=count,
+                   count=result_count,
+                   total_count=total_count,
                    page=page, 
                    total_pages=total_pages,
                    students=Students.all(limit, offset, search, sortBy, direction))

@@ -73,6 +73,16 @@ class Programs() :
         return result['count']
 
     @classmethod
+    def get_all_count(cls) :
+        db = get_db()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        sql = "SELECT COUNT(*) FROM programs "
+        cursor.execute(sql)
+        result = cursor.fetchone()
+
+        return result['count']
+
+    @classmethod
     def update(cls, target_code, code, name, college_code) :
         try:
             db = get_db()

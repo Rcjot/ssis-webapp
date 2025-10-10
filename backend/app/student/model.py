@@ -56,7 +56,17 @@ class Students() :
             return result
         except Exception as e:
             print(f"error getting students: {e}")
-    
+
+    @classmethod
+    def get_all_count(cls) :
+        db = get_db()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        sql = "SELECT COUNT(*) FROM students"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+
+        return result['count']
+
     @classmethod
     def get_count(cls, search) :
         db = get_db()
