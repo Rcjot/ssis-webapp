@@ -13,14 +13,12 @@ function QueryBar({
 }) {
     const [queryFormData, setQueryFormData] =
         useState<QueryParams>(queryParams);
-
+    console.log(queryParams);
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setQueryParams((prev) => ({
             ...prev,
             search: queryFormData.search,
-            sortBy: queryFormData.sortBy,
-            direction: queryFormData.direction,
         }));
         if (queryFormData.search != "") {
             setQueryParams((prev) => ({
