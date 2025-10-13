@@ -117,6 +117,7 @@ function PageNav({
                         setQueryParams((prev) => ({
                             ...prev,
                             limit: Number(e.target.value),
+                            pageNumber: 1,
                         }))
                     }
                 >
