@@ -9,6 +9,31 @@
     border-radius: 12px;
 }
 
+.sideBarStyles {
+    position: fixed;
+    min-height: 100dvh;
+    top: 50%;
+    left: -30%;
+    transform: translate(0%, -50%);
+    background-color: #fff;
+    z-index: 1000;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 8px;
+    animation-name: slidein-animation;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+@keyframes slidein-animation {
+    from {
+        left: -30%;
+    }
+    to {
+        left: 0%;
+    }
+}
+
 .modalContent {
     padding: 30px;
 }
@@ -21,4 +46,8 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 1000;
+}
+
+a {
+    font-size: 1.5em;
 }

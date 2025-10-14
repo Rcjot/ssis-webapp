@@ -6,7 +6,7 @@ function Home() {
 
     return (
         <div className={styles.pageContent}>
-            <p>hello {auth.user?.username}</p>
+            <h1>hello {auth.user?.username} !</h1>
         </div>
     );
 }

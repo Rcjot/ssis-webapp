@@ -1,4 +1,4 @@
-header {
+.desktopheader {
     display: flex;
     flex-direction: row;
     gap: 1rem;
@@ -9,7 +9,7 @@ header {
     /* max-width: 100%; */
 }
 
-header > div {
+.desktopheader > div {
     display: flex;
     flex-direction: row;
     gap: 5rem;
@@ -40,5 +40,23 @@ header > div {
     }
     to {
         width: 100%;
+    }
+}
+
+@media (min-width: 786px) {
+    .mobileheader {
+        display: none;
+    }
+    .desktopheader {
+        display: flex;
+    }
+}
+
+@media (max-width: 786px) {
+    .mobileheader {
+        display: flex;
+    }
+    .desktopheader {
+        display: none;
     }
 }
