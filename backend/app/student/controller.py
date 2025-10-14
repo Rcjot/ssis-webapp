@@ -7,7 +7,7 @@ import math
 
 
 @student_bp.route("/")
-# @login_required
+@login_required
 def get_students() :
     search = request.args.get('search', default="", type=str)
     sortBy = request.args.get('sortBy', default="none", type=str)

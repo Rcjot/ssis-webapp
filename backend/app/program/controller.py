@@ -6,7 +6,7 @@ import math
 from .model import Programs
 
 @program_bp.route("/")
-# @login_required
+@login_required
 def get_programs() :
     search = request.args.get('search', default="", type=str)
     sortBy = request.args.get('sortBy', default="none", type=str)

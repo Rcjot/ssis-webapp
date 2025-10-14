@@ -16,21 +16,27 @@ function Header() {
 
     return (
         <header className={styles.header}>
-            <SideBar
-                open={sideBarIsOpen}
-                onClose={() => {
-                    setSideBarIsOpen(false);
-                }}
-            />
-            <div className={styles.mobileheader}>
-                <img
-                    src={menuIcon}
-                    alt="menu"
-                    onClick={() => {
-                        setSideBarIsOpen(true);
-                    }}
-                />
-            </div>
+            {location.pathname == "/signup" || location.pathname == "/login" ? (
+                <></>
+            ) : (
+                <>
+                    <SideBar
+                        open={sideBarIsOpen}
+                        onClose={() => {
+                            setSideBarIsOpen(false);
+                        }}
+                    />
+                    <div className={styles.mobileheader}>
+                        <img
+                            src={menuIcon}
+                            alt="menu"
+                            onClick={() => {
+                                setSideBarIsOpen(true);
+                            }}
+                        />
+                    </div>
+                </>
+            )}
 
             <div className={styles.desktopheader}>
                 <ConfirmPopup

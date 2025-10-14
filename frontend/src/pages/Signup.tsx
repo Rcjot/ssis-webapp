@@ -50,6 +50,7 @@ function Signup() {
             setFormDataErrors(resjson.error);
         } else {
             toast.success("registered");
+            setFormData({ username: "", email: "", password: "", confirm: "" });
         }
     }
 
