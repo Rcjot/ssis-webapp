@@ -20,6 +20,7 @@ function Signup() {
         email: [],
         password: [],
         confirm: [],
+        general: [],
     });
 
     //put some errors
@@ -41,13 +42,24 @@ function Signup() {
             email: [],
             password: [],
             confirm: [],
+            general: [],
         });
 
         const res = await authApi.fetchSignup(formData, auth.csrftoken);
         const resjson = await res.json();
         console.log(resjson);
+        if (res.status == 419) {
+            setFormDataErrors({
+                username: [],
+                email: [],
+                password: [],
+                confirm: [],
+                general: ["csrf error, expired"],
+            });
+            return;
+        }
         if (!res.ok) {
-            setFormDataErrors(resjson.error);
+            setFormDataErrors({ ...resjson.error, general: [] });
         } else {
             toast.success("registered");
             setFormData({ username: "", email: "", password: "", confirm: "" });
@@ -108,7 +120,9 @@ function Signup() {
                         required
                     />
                 </div>
-
+                <div>
+                    <span>{formDataErrors.general.join(" ")}</span>
+                </div>
                 <button type="submit">sign up</button>
             </form>
             <p style={{ margin: "0px auto" }}>

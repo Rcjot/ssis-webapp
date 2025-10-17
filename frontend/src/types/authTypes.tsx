@@ -7,6 +7,7 @@ export interface LoginFormData {
 export interface LoginFormDataErrors {
     username: string;
     password: string;
+    general: string;
 }
 
 export interface SignupFormData {
@@ -21,6 +22,7 @@ export interface SignupFormDataErrors {
     email: string[];
     password: string[];
     confirm: string[];
+    general: string[];
 }
 
 export interface AuthType {

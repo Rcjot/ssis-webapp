@@ -74,10 +74,18 @@ function Students() {
                 open={confirmIsOpen}
                 onClose={() => setConfirmIsOpen(false)}
                 onConfirm={async () => {
-                    await studentApi.fetchDeleteStudent(
+                    const res = await studentApi.fetchDeleteStudent(
                         auth.csrftoken,
                         targetDelete as string
                     );
+                    if (res.status == 419) {
+                        toast.error(
+                            `delete ${targetDelete} unsuccessful (csrf expired)`
+                        );
+                        setTargetDelete(null);
+                        setConfirmIsOpen(false);
+                        return;
+                    }
                     fetchStudents();
                     toast.success(`delete ${targetDelete} successful`);
                     setTargetDelete(null);

@@ -15,6 +15,7 @@ function Login() {
     const [formDataErrors, setFormDataErrors] = useState<LoginFormDataErrors>({
         username: "",
         password: "",
+        general: "",
     });
 
     const navigate = useNavigate();
@@ -35,6 +36,7 @@ function Login() {
         setFormDataErrors({
             username: "",
             password: "",
+            general: "",
         });
 
         const success = await login(formData, setFormDataErrors);
@@ -91,7 +93,9 @@ function Login() {
                         <label htmlFor="rememberme">remember me</label>
                     </div>
                 </div>
-
+                <div>
+                    <span>{formDataErrors.general}</span>
+                </div>
                 <button type="submit">login</button>
             </form>
             <p style={{ margin: "0px auto" }}>

@@ -48,6 +48,7 @@ function ProgramForm({
             code: [],
             name: [],
             college_code: [],
+            general: [],
         });
 
     function handleChange(
@@ -68,6 +69,7 @@ function ProgramForm({
             code: [],
             name: [],
             college_code: [],
+            general: [],
         });
         let res;
 
@@ -80,11 +82,19 @@ function ProgramForm({
                 formDataOriginal.code
             );
         }
-
+        if (res.status == 419) {
+            setFormDataErrors({
+                code: [],
+                name: [],
+                college_code: [],
+                general: ["csrf error, expired"],
+            });
+            return;
+        }
         const resjson = await res.json();
         console.log(resjson);
         if (!res.ok) {
-            setFormDataErrors(resjson.error);
+            setFormDataErrors({ ...resjson.error, general: [] });
         } else {
             toast.success(`${formType}ed Program`);
             onSuccess();
@@ -139,7 +149,9 @@ function ProgramForm({
                     })}
                 </select>
             </div>
-
+            <div>
+                <span>{formDataErrors.general.join(" ")}</span>
+            </div>
             <button type="submit">
                 {formType === "edit" ? "save" : `${formType} program`}
             </button>

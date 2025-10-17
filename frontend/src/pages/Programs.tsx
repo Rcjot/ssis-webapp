@@ -68,10 +68,18 @@ function Programs() {
                 open={confirmIsOpen}
                 onClose={() => setConfirmIsOpen(false)}
                 onConfirm={async () => {
-                    await programApi.fetchDeleteProgram(
+                    const res = await programApi.fetchDeleteProgram(
                         auth.csrftoken,
                         targetDelete as string
                     );
+                    if (res.status == 419) {
+                        toast.error(
+                            `delete ${targetDelete} unsuccessful (csrf expired)`
+                        );
+                        setTargetDelete(null);
+                        setConfirmIsOpen(false);
+                        return;
+                    }
                     fetchPrograms();
                     setTargetDelete(null);
                     toast.success(`delete ${targetDelete} successful`);

@@ -23,6 +23,7 @@ export interface AddStudentFormDataErrors {
     year_level: string[];
     gender: string[];
     program_code: string[];
+    general: string[];
 }
 
 export interface StudentModalType {

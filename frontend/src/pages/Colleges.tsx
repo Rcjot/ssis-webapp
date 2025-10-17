@@ -66,10 +66,18 @@ function Colleges() {
             <ConfirmPopup
                 open={confirmIsOpen}
                 onConfirm={async () => {
-                    await collegeApi.fetchDeleteCollege(
+                    const res = await collegeApi.fetchDeleteCollege(
                         auth.csrftoken,
                         targetDelete as string
                     );
+                    if (res.status == 419) {
+                        toast.error(
+                            `delete ${targetDelete} unsuccessful (csrf expired)`
+                        );
+                        setTargetDelete(null);
+                        setConfirmIsOpen(false);
+                        return;
+                    }
                     fetchColleges();
                     toast.success(`delete ${targetDelete} successful`);
                     setTargetDelete(null);

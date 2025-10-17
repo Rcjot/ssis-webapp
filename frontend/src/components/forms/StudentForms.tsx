@@ -48,6 +48,7 @@ function StudentForm({
             year_level: [],
             gender: [],
             program_code: [],
+            general: [],
         });
     console.log(formType);
 
@@ -74,6 +75,7 @@ function StudentForm({
             year_level: [],
             gender: [],
             program_code: [],
+            general: [],
         });
         let res;
         if (formType == "add") {
@@ -88,8 +90,20 @@ function StudentForm({
 
         const resjson = await res.json();
         console.log(resjson);
+        if (res.status == 419) {
+            setFormDataErrors({
+                id: [],
+                first_name: [],
+                last_name: [],
+                year_level: [],
+                gender: [],
+                program_code: [],
+                general: ["csrf error, expired"],
+            });
+            return;
+        }
         if (!res.ok) {
-            setFormDataErrors(resjson.error);
+            setFormDataErrors({ ...resjson.error, general: [] });
         } else {
             toast.success(`${formType}ed student`);
             onSuccess();
@@ -185,7 +199,9 @@ function StudentForm({
                     })}
                 </select>
             </div>
-
+            <div>
+                <span>{formDataErrors.general?.join(" ")}</span>
+            </div>
             <button type="submit">
                 {formType === "edit" ? "save" : `${formType} student`}
             </button>

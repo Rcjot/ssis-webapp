@@ -14,6 +14,7 @@ export interface AddProgramFormDataErrors {
     code: string[];
     name: string[];
     college_code: string[];
+    general: string[];
 }
 
 export interface ProgramModalType {

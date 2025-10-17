@@ -42,6 +42,14 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
             const res = await authApi.fetchLogin(loginFormData, auth.csrftoken);
             const resjson = await res.json();
             console.log(res.status, res.ok);
+            if (res.status == 419) {
+                setFormDataErrors({
+                    username: "",
+                    password: "",
+                    general: "csrf error, expired",
+                });
+                return false;
+            }
             if (res.ok) {
                 setAuth(() => ({
                     status: "authenticated",

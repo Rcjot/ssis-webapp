@@ -11,6 +11,7 @@ export interface AddCollegeFormData {
 export interface AddCollegeFormDataErrors {
     code: string[];
     name: string[];
+    general: string[];
 }
 // add and update types would be the same as the college type though?
 export interface CollegeModalType {

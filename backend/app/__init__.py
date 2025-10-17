@@ -13,6 +13,7 @@ def create_app() :
     app.config.from_mapping(
         SECRET_KEY = SECRET_KEY,
         DATABASE_URL = DATABASE_URL,
+        WTF_CSRF_TIME_LIMIT = 4 * 60 * 60,
     )
 
     cors = CORS(app,
@@ -53,6 +54,6 @@ def create_app() :
     @app.errorhandler(CSRFError)
     def handle_csrf_error(e) :
         print(e.description)
-        return jsonify(error="CSRF failed", message=e.description), 400
+        return jsonify(error="CSRF failed", message=e.description), 419
 
     return app

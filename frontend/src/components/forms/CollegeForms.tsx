@@ -30,6 +30,7 @@ function CollegeForm({
         useState<AddCollegeFormDataErrors>({
             code: [],
             name: [],
+            general: [],
         });
     const { auth } = useAuth()!;
 
@@ -46,7 +47,9 @@ function CollegeForm({
         setFormDataErrors({
             code: [],
             name: [],
+            general: [],
         });
+        console.log(auth.csrftoken);
         let res;
         if (formType == "add") {
             res = await collegeApi.fetchAddCollege(formData, auth.csrftoken);
@@ -57,11 +60,18 @@ function CollegeForm({
                 formDataOriginal.code
             );
         }
-
         const resjson = await res.json();
-        console.log(resjson);
+
+        if (res.status == 419) {
+            setFormDataErrors({
+                code: [],
+                name: [],
+                general: ["csrf error, expired"],
+            });
+            return;
+        }
         if (!res.ok) {
-            setFormDataErrors(resjson.error);
+            setFormDataErrors({ ...resjson.error, general: [] });
         } else {
             toast.success(`${formType}ed College`);
             onSuccess();
@@ -84,7 +94,6 @@ function CollegeForm({
             </div>
             <div>
                 <label htmlFor="name">name</label>
-                <span>{formDataErrors.name.join(" ")}</span>
                 <input
                     type="text"
                     name="name"
@@ -94,7 +103,9 @@ function CollegeForm({
                     required
                 />
             </div>
-
+            <div>
+                <span>{formDataErrors.general.join(" ")}</span>
+            </div>
             <button type="submit">
                 {formType === "edit" ? "save" : `${formType} college`}
             </button>
