@@ -16,7 +16,7 @@ def convert_to_None(value) :
 
 class ProgramForm(FlaskForm) :
     hidden = StringField()
-    code = StringField(validators=[validators.DataRequired(), code_not_ditto])
-    name = StringField(validators=[validators.DataRequired(), validators.Length(min=7)])
+    code = StringField(validators=[validators.DataRequired(), code_not_ditto, ], filters=[lambda x : x.strip() if x else x])
+    name = StringField(validators=[validators.DataRequired(), validators.Length(min=7)], filters=[lambda x : x.strip() if x else x])
     college_code = StringField(validators=[college_exists], filters=[convert_to_None])
 

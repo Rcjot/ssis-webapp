@@ -28,8 +28,8 @@ def convert_to_None(value) :
 class StudentForm(FlaskForm) :
     hidden = StringField()
     id = StringField(validators=[validators.DataRequired(), validators.Length(min=9, max= 9, message="must be exactly 9 characters"), id_not_ditto, correct_format])
-    first_name = StringField(validators=[validators.DataRequired(), validators.Length(min=2)])
-    last_name = StringField(validators=[validators.DataRequired(), validators.Length(min=2)])
+    first_name = StringField(validators=[validators.DataRequired(), validators.Length(min=2)], filters=[lambda x : x.strip() if x else x])
+    last_name = StringField(validators=[validators.DataRequired(), validators.Length(min=2)], filters=[lambda x : x.strip() if x else x])
     gender = RadioField(validators=[validators.DataRequired()], choices=[("m", "male"), ("f", "female")])
     year_level = IntegerField(validators=[validators.DataRequired(), validators.NumberRange(min=1, max = 5)])
     program_code = StringField(validators=[program_exists], filters=[convert_to_None])
