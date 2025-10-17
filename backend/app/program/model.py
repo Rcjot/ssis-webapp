@@ -24,7 +24,7 @@ class Programs() :
         params = []
         search = "%" + search + "%"
         sql = "SELECT * FROM programs "
-        where = "WHERE code LIKE %s OR name LIKE %s OR college_code LIKE %s "
+        where = "WHERE code ILIKE %s OR name ILIKE %s OR college_code ILIKE %s "
         sql += where
         params.extend([search, search, search])
         orderby = f"ORDER BY {sortBy} {direction} "
@@ -62,7 +62,7 @@ class Programs() :
         params = []
         search = "%" + search + "%"
         sql = "SELECT COUNT(*) FROM programs "
-        where = "WHERE code LIKE %s OR name LIKE %s OR college_code LIKE %s "
+        where = "WHERE code ILIKE %s OR name ILIKE %s OR college_code ILIKE %s "
         sql += where
         params.extend([search, search, search])
 
