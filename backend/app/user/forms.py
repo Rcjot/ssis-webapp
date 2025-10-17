@@ -7,7 +7,7 @@ def username_not_ditto(form, field) :
         raise ValidationError('username alr exists')
 
 class UserForm(FlaskForm) :
-    username = StringField(validators=[validators.DataRequired(), validators.Length(min=3, max=20), username_not_ditto])
+    username = StringField(validators=[validators.DataRequired(), validators.Length(min=3, max=20), username_not_ditto], filters=[lambda x : x.strip() if x else x])
     email = StringField(validators=[validators.Length(min=10, max=50)])
     password = PasswordField(validators=[validators.DataRequired()])
     confirm = PasswordField(validators=[validators.DataRequired(),  validators.EqualTo('password')])
