@@ -93,6 +93,7 @@ function CollegeForm({
                 />
             </div>
             <div>
+                <span>{formDataErrors.name.join(" ")}</span>
                 <label htmlFor="name">name</label>
                 <input
                     type="text"
