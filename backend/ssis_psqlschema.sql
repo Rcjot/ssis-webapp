@@ -23,6 +23,7 @@ CREATE TABLE students (
     gender CHAR(1) NOT NULL,
     year_level SMALLINT NOT NULL CHECK (year_level BETWEEN 1 AND 5),
     program_code VARCHAR(15) NULL,
+    student_pfp_url TEXT NULL,
     FOREIGN KEY (program_code) REFERENCES programs(code)
     ON DELETE SET NULL
     ON UPDATE CASCADE
