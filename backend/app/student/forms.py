@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField
 from wtforms import StringField, ValidationError, validators, IntegerField, RadioField
 from .model import Students
 from ..program.model import Programs
@@ -25,6 +26,14 @@ def correct_format(form, field) :
 def convert_to_None(value) :
     return None if value.strip() == "" else value.strip()
 
+def is_image(form, field) :
+    file = field.data
+
+    if not file :
+        return
+    if not file.mimetype.startswith("image/") :
+        raise ValidationError("file must be an image!")
+
 class StudentForm(FlaskForm) :
     hidden = StringField()
     id = StringField(validators=[validators.DataRequired(), validators.Length(min=9, max= 9, message="must be exactly 9 characters"), id_not_ditto, correct_format])
@@ -33,3 +42,5 @@ class StudentForm(FlaskForm) :
     gender = RadioField(validators=[validators.DataRequired()], choices=[("m", "male"), ("f", "female")])
     year_level = IntegerField(validators=[validators.DataRequired(), validators.NumberRange(min=1, max = 5)])
     program_code = StringField(validators=[program_exists], filters=[convert_to_None])
+    student_pfp_url = FileField(validators=[is_image]) 
+
