@@ -7,7 +7,7 @@ import re
 from datetime import datetime
 
 def id_not_ditto(form, field) :
-    if (Students.check_id_exists(field.data) and field.data != form.hidden.data) :
+    if (Students.check_id_exists(field.data) and field.data != form.hidden) :
         raise ValidationError("student id alr exists")
 
 def program_exists(form, field) :

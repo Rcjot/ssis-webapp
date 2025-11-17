@@ -116,34 +116,40 @@ class Students() :
     
     @classmethod
     def update(cls, target_id, id, first_name, last_name, gender, year_level, program_code) :
-        try:
-            db = get_db()
-            cursor = db.cursor()
+        db = get_db()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-            sql = "UPDATE students SET id =%s, first_name = %s, last_name = %s, gender = %s, year_level = %s, program_code = %s WHERE id = %s"
-            cursor.execute(sql, (id, first_name, last_name, gender, year_level, program_code, target_id))
-            db.commit()
-            cursor.close()
+        sql = """UPDATE students
+        SET id =%s,
+        first_name = %s,
+        last_name = %s,
+        gender = %s,
+        year_level = %s,
+        program_code = %s
+        WHERE id = %s
+        RETURNING uuid
+        """
+        cursor.execute(sql, (id, first_name, last_name, gender, year_level, program_code, target_id))
+        uuid_res = cursor.fetchone()
+        db.commit()
+        cursor.close()
 
-            return True
-        except Exception as e:
-            print(f"error updating student: {e}")
-            return False
+        return uuid_res
+
 
     @classmethod
     def delete(cls, target_id) :
-        try:
-            db = get_db()
-            cursor= db.cursor()
-            sql = "DELETE FROM students WHERE id = %s"
-            cursor.execute(sql, (target_id,))
-            db.commit()
-            cursor.close()
-
-            return True
-        except Exception as e:
-            print(f"error deleting student: {e}")
-
+        db = get_db()
+        cursor= db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        sql = "DELETE FROM students WHERE id = %s RETURNING student_pfp_path"
+        cursor.execute(sql, (target_id,))
+        pfp_path_res = cursor.fetchone()
+        db.commit()
+        cursor.close()
+        if not pfp_path_res :
+            return None
+        return pfp_path_res
+    
     @classmethod 
     def get_by_id(cls, id) :
         db = get_db()

@@ -61,7 +61,7 @@ def add_student() :
         uuid_res = new_student.add()
         uuid = uuid_res["uuid"]
 
-        if form.student_pfp_file :
+        if form.student_pfp_file.data :
             path = supabase.upload_image(form.student_pfp_file.data, uuid)
             Students.patch_student_pfp(path,uuid) 
 
@@ -76,9 +76,8 @@ def add_student() :
 @student_bp.route("/edit/<id>", methods=["POST"])
 @login_required
 def update_student(id) :
-    data = request.get_json()
-    data["hidden"] = id
-    form = StudentForm(data=data)
+    form = StudentForm()
+    form.hidden = id
     validated = form.validate()
     error = {
         "id" : form.id.errors,
@@ -86,19 +85,32 @@ def update_student(id) :
         "last_name" : form.last_name.errors,
         "gender" : form.gender.errors,
         "year_level" : form.year_level.errors,
-        "program_code" : form.program_code.errors
+        "program_code" : form.program_code.errors,
+        "student_pfp_file" : form.student_pfp_file.errors
     }
 
     if validated :
-        if Students.update(id, 
+        uuid_res = Students.update(id, 
                         id=form.id.data,
                         first_name=form.first_name.data,
                         last_name=form.last_name.data,
                         gender=form.gender.data,
                         year_level=form.year_level.data,
                         program_code=form.program_code.data
-                        )    :
-            return jsonify(success=True, message="edit student successful")
+                        )  
+        if not uuid_res :
+            return jsonify(success=False,
+                message="Something went wrong updating student",
+                error =error
+                ), 400
+
+        uuid = uuid_res["uuid"]
+
+        if form.student_pfp_file.data :
+            path = supabase.upload_image(form.student_pfp_file.data, uuid)
+            Students.patch_student_pfp(path,uuid) 
+        
+        return jsonify(success=True, message="edit student successful")
 
             
     return jsonify(success=False,
@@ -109,8 +121,15 @@ def update_student(id) :
 @student_bp.route("/delete/<code>", methods=["POST"])
 @login_required
 def delete_student(code) :
-    if Students.delete(code) :
-        return jsonify(success=True, message="delete student successful")
-    return jsonify(success=False, message="something went wrong deleting")
+    pfp_path_res = Students.delete(code)
 
-    
+    if not pfp_path_res :
+        return jsonify(success=False, message="something went wrong deleting")
+
+    pfp_path = pfp_path_res["student_pfp_path"]
+
+    if pfp_path :
+        supabase.delete_image(pfp_path)
+
+    return jsonify(success=True, message="delete student successful")
+   
