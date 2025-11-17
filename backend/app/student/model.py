@@ -3,23 +3,45 @@ import psycopg2.extras
 
 
 class Students() : 
-    def __init__(self, id=None, first_name=None, last_name=None, gender=None, year_level=None, program_code=None):
+    def __init__(self, id=None, first_name=None, last_name=None, gender=None, year_level=None, program_code=None, student_pfp_path=None):
         self.id =id
         self.first_name = first_name
         self.last_name = last_name
         self.gender = gender
         self.year_level = year_level
         self.program_code = program_code
-
+        self.student_pfp_path = student_pfp_path
 
     def add(self) :
         db = get_db()
-        cursor = db.cursor()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        sql = "INSERT INTO students(id, first_name, last_name, gender, year_level, program_code) VALUES (%s, %s, %s, %s, %s, %s)"
+        sql ="""INSERT INTO 
+        students(id, first_name, last_name, gender, year_level, program_code)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        RETURNING uuid
+        """
         cursor.execute(sql, (self.id, self.first_name, self.last_name, self.gender, self.year_level, self.program_code))
+        uuid_res = cursor.fetchone()
         db.commit()
         cursor.close()
+
+        return uuid_res
+    
+    @classmethod
+    def patch_student_pfp(cls, student_pfp_path, student_uuid) :
+        db = get_db()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+        sql ="""
+        UPDATE students 
+        SET student_pfp_path = %s
+        WHERE uuid = %s
+        """
+        cursor.execute(sql, (student_pfp_path, student_uuid))
+        db.commit()
+        cursor.close()
+
 
     @classmethod
     def all(cls, limit, offset, search, sortBy, direction) :

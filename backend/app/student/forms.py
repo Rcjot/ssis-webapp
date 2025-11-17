@@ -42,5 +42,5 @@ class StudentForm(FlaskForm) :
     gender = RadioField(validators=[validators.DataRequired()], choices=[("m", "male"), ("f", "female")])
     year_level = IntegerField(validators=[validators.DataRequired(), validators.NumberRange(min=1, max = 5)])
     program_code = StringField(validators=[program_exists], filters=[convert_to_None])
-    student_pfp_url = FileField(validators=[is_image]) 
+    student_pfp_file = FileField(validators=[is_image]) 
 

@@ -16,14 +16,17 @@ CREATE TABLE programs (
     ON UPDATE CASCADE
 );
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE students (
     id VARCHAR(9) PRIMARY KEY CHECK (id ~ '^[0-9]{4}-[0-9]{4}$'),
+    uuid UUID DEFAULT uuid_generate_v4() UNIQUE NOT NULL,
     first_name VARCHAR(128) NOT NULL,
     last_name VARCHAR(128) NOT NULL,
     gender CHAR(1) NOT NULL,
     year_level SMALLINT NOT NULL CHECK (year_level BETWEEN 1 AND 5),
     program_code VARCHAR(15) NULL,
-    student_pfp_url TEXT NULL,
+    student_pfp_path TEXT NULL,
     FOREIGN KEY (program_code) REFERENCES programs(code)
     ON DELETE SET NULL
     ON UPDATE CASCADE

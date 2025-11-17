@@ -3,6 +3,7 @@ from .model import Students
 from flask_login import login_required
 from flask import request, jsonify
 from .forms import StudentForm
+from ..service import supabase
 import math
 
 
@@ -37,8 +38,7 @@ def get_students() :
 @student_bp.route("/add", methods=["POST"])
 @login_required
 def add_student() :
-    data = request.get_json()
-    form = StudentForm(data=data)
+    form = StudentForm()
     validated = form.validate()
     error = {
         "id" : form.id.errors,
@@ -46,20 +46,26 @@ def add_student() :
         "last_name" : form.last_name.errors,
         "gender" : form.gender.errors,
         "year_level" : form.year_level.errors,
-        "program_code" : form.program_code.errors
+        "program_code" : form.program_code.errors,
+        "student_pfp_file" : form.student_pfp_file.errors
     }
 
     if validated :
         new_student = Students(id=form.id.data,
-                               first_name=form.first_name.data,
-                               last_name=form.last_name.data,
-                               gender=form.gender.data,
-                               year_level=form.year_level.data,
-                               program_code=form.program_code.data
-                               )
-        
-        new_student.add()
+                        first_name=form.first_name.data,
+                        last_name=form.last_name.data,
+                        gender=form.gender.data,
+                        year_level=form.year_level.data,
+                        program_code=form.program_code.data,
+                        )
+        uuid_res = new_student.add()
+        uuid = uuid_res["uuid"]
 
+        if form.student_pfp_file :
+            path = supabase.upload_image(form.student_pfp_file.data, uuid)
+            Students.patch_student_pfp(path,uuid) 
+
+        
         return jsonify(success=True, message="add student successful")
     
     return jsonify(success=False,
