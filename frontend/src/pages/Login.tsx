@@ -21,7 +21,7 @@ function Login() {
     const navigate = useNavigate();
     //put some errors
 
-    const { login, auth } = useAuth()!;
+    const { login } = useAuth()!;
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setFormData((prev) => ({
@@ -47,8 +47,11 @@ function Login() {
 
     return (
         <div className={styles.pageContent}>
-            <div>{auth.status}</div>
-            <form className={formStyles.formStyle} onSubmit={handleSubmit}>
+            {/* <div>{auth.status}</div> */}
+            <form
+                className={`${formStyles.formStyle} ${styles.publicForm}`}
+                onSubmit={handleSubmit}
+            >
                 <div>
                     <label htmlFor="username">username</label>
                     <span>{formDataErrors.username}</span>

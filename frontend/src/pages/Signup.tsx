@@ -68,7 +68,7 @@ function Signup() {
 
     return (
         <div className={styles.pageContent}>
-            <div>{auth.status}</div>
+            {/* <div>{auth.status}</div> */}
             <form className={formStyles.formStyle} onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="username">username</label>
