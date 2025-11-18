@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from config import SECRET_KEY, DATABASE_URL
 from . import database
 from flask_cors import CORS
@@ -9,7 +9,10 @@ login_manager = LoginManager()
 
 
 def create_app() :
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, 
+                instance_relative_config=True, 
+                static_folder="../../frontend/dist", 
+                static_url_path="/")
     app.config.from_mapping(
         SECRET_KEY = SECRET_KEY,
         DATABASE_URL = DATABASE_URL,
@@ -27,11 +30,15 @@ def create_app() :
     login_manager.init_app(app)
 
     #---- routers
-    @app.route("/")
-    def hello_world():
-        return {
-            "Home" : "Hello SSIS!"
-        }
+    @app.route("/") 
+    def server():
+        return send_from_directory(app.static_folder, "index.html")
+        
+    @app.errorhandler(404)
+    def not_found(e) :
+        return send_from_directory(app.static_folder, "index.html")
+
+
 
     from .user import user_bp
     app.register_blueprint(user_bp)

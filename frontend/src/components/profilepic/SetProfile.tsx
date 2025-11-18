@@ -78,7 +78,7 @@ function SetProfile({
                         ref={inputRef}
                         type="file"
                         className="d-none"
-                        accept="image/"
+                        accept="image/*"
                         onChange={handleImage}
                     />
                     <button
