@@ -63,22 +63,24 @@ function QueryBar({
                 >
                     {children}
                 </select>
-                <select
-                    className="form-select"
-                    aria-label="direction select"
-                    name="direction"
-                    id="direction_select"
-                    value={queryParams.direction}
-                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                        setQueryParams((prev) => ({
-                            ...prev,
-                            direction: e.target.value as "ASC" | "DESC",
-                        }))
-                    }
-                >
-                    <option value="ASC">ascending</option>
-                    <option value="DESC">descending</option>
-                </select>
+                {queryParams.sortBy != "none" && queryParams.sortBy != "" && (
+                    <select
+                        className="form-select"
+                        aria-label="direction select"
+                        name="direction"
+                        id="direction_select"
+                        value={queryParams.direction}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                            setQueryParams((prev) => ({
+                                ...prev,
+                                direction: e.target.value as "ASC" | "DESC",
+                            }))
+                        }
+                    >
+                        <option value="ASC">ascending</option>
+                        <option value="DESC">descending</option>
+                    </select>
+                )}
             </form>
         </div>
     );
