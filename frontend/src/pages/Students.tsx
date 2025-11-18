@@ -25,6 +25,7 @@ function Students() {
             year_level: 1,
             gender: "m",
             program_code: "",
+            student_pfp_file: null,
         },
     });
     // query params here?

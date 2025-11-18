@@ -5,6 +5,7 @@ export interface Student {
     year_level: number;
     gender: string;
     program_code: string;
+    student_pfp_path: string;
 }
 
 export interface AddStudentFormData {
@@ -14,6 +15,7 @@ export interface AddStudentFormData {
     year_level: number;
     gender: string;
     program_code: string;
+    student_pfp_file: Blob | null;
 }
 
 export interface AddStudentFormDataErrors {
@@ -23,6 +25,7 @@ export interface AddStudentFormDataErrors {
     year_level: string[];
     gender: string[];
     program_code: string[];
+    student_pfp_file: string[];
     general: string[];
 }
 

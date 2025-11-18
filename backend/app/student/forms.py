@@ -11,6 +11,7 @@ def id_not_ditto(form, field) :
         raise ValidationError("student id alr exists")
 
 def program_exists(form, field) :
+    print(field.data, "e")
     if (not Programs.check_code_exists(field.data) and field.data is not None) :
         raise ValidationError("program code doesnt exist")
 
@@ -24,6 +25,8 @@ def correct_format(form, field) :
 
 
 def convert_to_None(value) :
+    if value is None :
+        return None 
     return None if value.strip() == "" else value.strip()
 
 def is_image(form, field) :

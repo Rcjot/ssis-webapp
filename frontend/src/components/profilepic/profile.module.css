@@ -1,0 +1,18 @@
+.profileForm {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    min-width: 500px;
+}
+/* className="flex flex-col gap-2 items-center min-w-[200px] sm:min-w-[500px]" */
+
+.profileImage {
+    border-radius: 100px;
+    min-width: 150px;
+
+    width: 150px;
+    height: 150px;
+}
+
+/* className="rounded-full w-[150px] h-[150px] transition-opacity duration-200 hover:opacity-60" */
