@@ -28,6 +28,7 @@ async function fetchAddStudent(
     formData.append("year_level", String(addStudentFormData.year_level));
     formData.append("gender", String(addStudentFormData.gender));
     formData.append("program_code", String(addStudentFormData.program_code));
+    console.log(addStudentFormData.student_pfp_file);
     if (addStudentFormData.student_pfp_file) {
         formData.append(
             "student_pfp_file",
@@ -70,7 +71,6 @@ async function fetchEditStudent(
         method: "POST",
         credentials: "include",
         headers: {
-            "Content-Type": "multipart/form-data",
             "X-CSRFToken": csrftoken ? csrftoken : "",
         },
         body: formData,

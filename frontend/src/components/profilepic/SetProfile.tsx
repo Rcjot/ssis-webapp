@@ -1,3 +1,4 @@
+const baseurl: string = import.meta.env.VITE_SUPABASE_BASEURL;
 import { useRef, useState } from "react";
 // import { useAuthContext } from "../auth/AuthContext";
 import defaultpfp from "@/assets/defaultpfp.png";
@@ -11,14 +12,22 @@ interface setProfileProps {
     canvasRef: React.RefObject<HTMLCanvasElement | null>;
     showCrop: boolean;
     setShowCrop: React.Dispatch<React.SetStateAction<boolean>>;
+    student_pfp_path: string | null;
 }
 
-function SetProfile({ canvasRef, showCrop, setShowCrop }: setProfileProps) {
+function SetProfile({
+    canvasRef,
+    showCrop,
+    setShowCrop,
+    student_pfp_path,
+}: setProfileProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     // const canvasRef = useRef<HTMLCanvasElement>(null);
     // const { auth, fetchCredentials } = useAuthContext()!;
     const [imageSrc, setImageSrc] = useState<string>("");
-    const [pfpPreview, setPfpPreview] = useState<string>(defaultpfp);
+    const [pfpPreview, setPfpPreview] = useState<string>(
+        student_pfp_path ? `${baseurl}${student_pfp_path}` : defaultpfp
+    );
     // const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     function handleImage(e: React.ChangeEvent<HTMLInputElement>) {

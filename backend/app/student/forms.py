@@ -31,6 +31,7 @@ def convert_to_None(value) :
 
 def is_image(form, field) :
     file = field.data
+    print(file)
 
     if not file :
         return

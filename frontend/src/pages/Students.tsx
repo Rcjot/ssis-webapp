@@ -1,3 +1,4 @@
+const baseurl: string = import.meta.env.VITE_SUPABASE_BASEURL;
 import { useCallback, useEffect, useState } from "react";
 import studentApi from "../api/studentApi";
 import type { Student } from "../types/studentTypes";
@@ -13,6 +14,7 @@ import ConfirmPopup from "../components/modals/ConfirmPopup";
 import deleteIcon from "../assets/delete.svg";
 import editIcon from "../assets/edit.svg";
 import { toast } from "react-toastify";
+import defaultpfp from "@/assets/defaultpfp.png";
 
 function Students() {
     const [students, setStudents] = useState<Student[] | null>(null);
@@ -27,6 +29,7 @@ function Students() {
             program_code: "",
             student_pfp_file: null,
         },
+        student_pfp_path: null,
     });
     // query params here?
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -69,6 +72,7 @@ function Students() {
                     }}
                     formDataOriginal={formState.formData}
                     formType={formState.formType}
+                    student_pfp_path={formState.student_pfp_path}
                 />
             </Modal>
             <ConfirmPopup
@@ -113,7 +117,9 @@ function Students() {
                             year_level: 1,
                             gender: "m",
                             program_code: "",
+                            student_pfp_file: null,
                         },
+                        student_pfp_path: null,
                     });
                     setIsOpen(true);
                 }}
@@ -139,6 +145,9 @@ function Students() {
                         <table className="table">
                             <thead>
                                 <tr>
+                                    <th style={{ paddingLeft: "1.4em" }}>
+                                        pfp
+                                    </th>
                                     <th>id</th>
                                     <th>firstName</th>
                                     <th>lastName</th>
@@ -152,6 +161,22 @@ function Students() {
                                 {students.map((s) => {
                                     return (
                                         <tr key={s.id}>
+                                            <td>
+                                                <img
+                                                    style={{
+                                                        width: "60px",
+                                                        height: "60px",
+                                                        borderRadius: "50%",
+                                                    }}
+                                                    src={
+                                                        s.student_pfp_path
+                                                            ? `${baseurl}${s.student_pfp_path}`
+                                                            : defaultpfp
+                                                    }
+                                                    alt=""
+                                                />
+                                            </td>
+
                                             <td>{s.id}</td>
                                             <td>{s.first_name}</td>
                                             <td>{s.last_name}</td>
@@ -192,7 +217,13 @@ function Students() {
                                                                 () => ({
                                                                     formType:
                                                                         "edit",
-                                                                    formData: s,
+                                                                    formData: {
+                                                                        ...s,
+                                                                        student_pfp_file:
+                                                                            null,
+                                                                    },
+                                                                    student_pfp_path:
+                                                                        s.student_pfp_path,
                                                                 })
                                                             );
                                                             setIsOpen(true);

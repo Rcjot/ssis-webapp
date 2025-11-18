@@ -5,7 +5,7 @@ export interface Student {
     year_level: number;
     gender: string;
     program_code: string;
-    student_pfp_path: string;
+    student_pfp_path: string | null;
 }
 
 export interface AddStudentFormData {
@@ -32,4 +32,5 @@ export interface AddStudentFormDataErrors {
 export interface StudentModalType {
     formType: "edit" | "add";
     formData: AddStudentFormData;
+    student_pfp_path: string | null;
 }

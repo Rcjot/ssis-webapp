@@ -14,10 +14,12 @@ function StudentForm({
     onSuccess,
     formDataOriginal,
     formType,
+    student_pfp_path,
 }: {
     onSuccess: () => Promise<void>;
     formDataOriginal: AddStudentFormData;
     formType: "add" | "edit";
+    student_pfp_path: string | null;
 }) {
     const [formData, setFormData] =
         useState<AddStudentFormData>(formDataOriginal);
@@ -56,7 +58,6 @@ function StudentForm({
             student_pfp_file: [],
             general: [],
         });
-    console.log(formType);
 
     //put some errors
 
@@ -88,6 +89,7 @@ function StudentForm({
         const newFormData = formData;
 
         setIsSubmitting(true);
+        console.log(canvasRef);
         if (canvasRef.current) {
             canvasRef.current.toBlob(
                 async (blob) => {
@@ -98,46 +100,87 @@ function StudentForm({
 
                         // await profileApi.sendImage(formData);
                         // await fetchCredentials();
+                        if (formType == "add") {
+                            res = await studentApi.fetchAddStudent(
+                                newFormData,
+                                auth.csrftoken
+                            );
+                        } else {
+                            res = await studentApi.fetchEditStudent(
+                                newFormData,
+                                auth.csrftoken,
+                                formDataOriginal.id
+                            );
+                        }
+                        const resjson = await res.json();
+                        console.log(resjson);
+                        if (res.status == 419) {
+                            setFormDataErrors({
+                                id: [],
+                                first_name: [],
+                                last_name: [],
+                                year_level: [],
+                                gender: [],
+                                program_code: [],
+                                student_pfp_file: [],
+                                general: ["csrf error, expired"],
+                            });
+                            setIsSubmitting(false);
+                            return;
+                        }
+                        if (!res.ok) {
+                            setFormDataErrors({
+                                ...resjson.error,
+                                general: [],
+                            });
+                        } else {
+                            toast.success(`${formType}ed student`);
+                            onSuccess();
+                        }
+                        setIsSubmitting(false);
                     }
                 },
                 "image/jpg",
                 0.9
             );
-        }
-
-        if (formType == "add") {
-            res = await studentApi.fetchAddStudent(newFormData, auth.csrftoken);
         } else {
-            res = await studentApi.fetchEditStudent(
-                newFormData,
-                auth.csrftoken,
-                formDataOriginal.id
-            );
-        }
-
-        const resjson = await res.json();
-        console.log(resjson);
-        if (res.status == 419) {
-            setFormDataErrors({
-                id: [],
-                first_name: [],
-                last_name: [],
-                year_level: [],
-                gender: [],
-                program_code: [],
-                student_pfp_file: [],
-                general: ["csrf error, expired"],
-            });
+            console.log(newFormData);
+            if (formType == "add") {
+                res = await studentApi.fetchAddStudent(
+                    newFormData,
+                    auth.csrftoken
+                );
+            } else {
+                res = await studentApi.fetchEditStudent(
+                    newFormData,
+                    auth.csrftoken,
+                    formDataOriginal.id
+                );
+            }
+            const resjson = await res.json();
+            console.log(resjson);
+            if (res.status == 419) {
+                setFormDataErrors({
+                    id: [],
+                    first_name: [],
+                    last_name: [],
+                    year_level: [],
+                    gender: [],
+                    program_code: [],
+                    student_pfp_file: [],
+                    general: ["csrf error, expired"],
+                });
+                setIsSubmitting(false);
+                return;
+            }
+            if (!res.ok) {
+                setFormDataErrors({ ...resjson.error, general: [] });
+            } else {
+                toast.success(`${formType}ed student`);
+                onSuccess();
+            }
             setIsSubmitting(false);
-            return;
         }
-        if (!res.ok) {
-            setFormDataErrors({ ...resjson.error, general: [] });
-        } else {
-            toast.success(`${formType}ed student`);
-            onSuccess();
-        }
-        setIsSubmitting(false);
     }
 
     return (
@@ -146,6 +189,7 @@ function StudentForm({
                 canvasRef={canvasRef}
                 showCrop={showCrop}
                 setShowCrop={setShowCrop}
+                student_pfp_path={student_pfp_path}
             />
             <div className={showCrop ? "d-none" : ""}>
                 <div>
