@@ -51,9 +51,9 @@ function Header() {
                 >
                     <p className="text-center">Are you sure to log out?</p>
                 </ConfirmPopup>
-
-                {auth.status === "authenticated" && (
-                    <>
+                <div className={styles.headerwidget}>
+                    <h2>SSIS</h2>
+                    {auth.status === "authenticated" && (
                         <Link to={"/home"}>
                             <img
                                 style={{ height: "32px", width: "32px" }}
@@ -61,6 +61,11 @@ function Header() {
                                 alt="home"
                             />
                         </Link>
+                    )}
+                </div>
+
+                {auth.status === "authenticated" && (
+                    <>
                         <div>
                             <Link
                                 className={
