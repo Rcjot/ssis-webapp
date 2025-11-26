@@ -1,4 +1,5 @@
 .formStyle {
+    margin: auto;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -10,11 +11,13 @@
     align-self: center;
 }
 
-.formStyle > div {
+.formStyle > div,
+.formStyle > .subform > div {
     display: flex;
     flex-direction: column;
 }
 
-.formStyle > div > span {
+.formStyle > div > span,
+.formStyle > div > div > span {
     color: rgb(122, 17, 17);
 }

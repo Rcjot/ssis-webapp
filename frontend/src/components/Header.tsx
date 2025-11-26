@@ -95,12 +95,8 @@ function Header() {
                         </div>
                     </>
                 )}
-                {auth.status === "authenticated" ? (
+                {auth.status === "authenticated" && (
                     <button onClick={() => setIsOpen(true)}>logout</button>
-                ) : (
-                    <Link to="/login" style={{ marginLeft: "auto" }}>
-                        Login
-                    </Link>
                 )}
             </div>
         </header>

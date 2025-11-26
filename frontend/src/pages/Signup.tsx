@@ -69,7 +69,10 @@ function Signup() {
     return (
         <div className={styles.pageContent}>
             {/* <div>{auth.status}</div> */}
-            <form className={formStyles.formStyle} onSubmit={handleSubmit}>
+            <form
+                className={`${formStyles.formStyle} ${styles.publicForm}`}
+                onSubmit={handleSubmit}
+            >
                 <div>
                     <label htmlFor="username">username</label>
                     <span>{formDataErrors.username.join(" ")}</span>
@@ -124,13 +127,14 @@ function Signup() {
                     <span>{formDataErrors.general.join(" ")}</span>
                 </div>
                 <button type="submit">sign up</button>
+                <p style={{ margin: "0px auto", textAlign: "center" }}>
+                    already have an account?
+                    <br />
+                    <Link style={{ color: "#646cff" }} to="/login">
+                        login
+                    </Link>
+                </p>
             </form>
-            <p style={{ margin: "0px auto" }}>
-                alr have an account?{" "}
-                <Link style={{ color: "#646cff" }} to="/login">
-                    login
-                </Link>
-            </p>
         </div>
     );
 }

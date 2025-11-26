@@ -100,13 +100,14 @@ function Login() {
                     <span>{formDataErrors.general}</span>
                 </div>
                 <button type="submit">login</button>
+                <p style={{ margin: "0px auto", textAlign: "center" }}>
+                    dont have account yet?
+                    <br />
+                    <Link style={{ color: "#646cff" }} to="/signup">
+                        signup
+                    </Link>
+                </p>
             </form>
-            <p style={{ margin: "0px auto" }}>
-                dont have account yet?{" "}
-                <Link style={{ color: "#646cff" }} to="/signup">
-                    signup
-                </Link>
-            </p>
         </div>
     );
 }
