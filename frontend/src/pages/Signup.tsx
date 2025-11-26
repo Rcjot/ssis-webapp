@@ -99,7 +99,10 @@ function Signup() {
                 </div>
                 <div>
                     <label htmlFor="password">password</label>
-                    <span>{formDataErrors.password.join(" ")}</span>
+                    <span>
+                        {formDataErrors.password.length > 0 &&
+                            formDataErrors.password[0]}
+                    </span>
                     <input
                         type="password"
                         name="password"
