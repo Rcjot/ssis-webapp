@@ -17,7 +17,27 @@
     flex-direction: column;
 }
 
+.formStyle label {
+    font-weight: bold;
+}
+
 .formStyle > div > span,
 .formStyle > div > div > span {
     color: rgb(122, 17, 17);
+}
+
+.formStyle > .subformView {
+    display: grid !important;
+    grid-template-columns: auto auto;
+}
+
+.formStyle > .subformView > div {
+    display: flex;
+    flex-direction: column;
+    min-width: fit-content;
+    text-wrap: wrap;
+}
+
+.formStyle > .subformView > div > div {
+    max-width: 200px;
 }

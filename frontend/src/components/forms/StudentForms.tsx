@@ -191,7 +191,7 @@ function StudentForm({
                 setShowCrop={setShowCrop}
                 student_pfp_path={student_pfp_path}
             />
-            <div className={`${showCrop ? "d-none" : ""} subform`}>
+            <div className={`${showCrop ? "d-none" : ""} ${styles.subform}`}>
                 <div>
                     <label htmlFor="id">id</label>
                     <span>{formDataErrors.id.join(" ")}</span>

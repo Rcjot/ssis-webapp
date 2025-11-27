@@ -15,6 +15,7 @@ import deleteIcon from "../assets/delete.svg";
 import editIcon from "../assets/edit.svg";
 import { toast } from "react-toastify";
 import defaultpfp from "@/assets/defaultpfp.png";
+import ViewStudent from "../components/modals/ViewStudent";
 
 function Students() {
     const [students, setStudents] = useState<Student[] | null>(null);
@@ -33,6 +34,7 @@ function Students() {
     });
     // query params here?
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [viewIsOpen, setViewIsOpen] = useState<boolean>(false);
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const [targetDelete, setTargetDelete] = useState<string | null>(null);
 
@@ -45,6 +47,8 @@ function Students() {
         pageNumber: 1,
         limit: 10,
     });
+
+    const [viewStudentId, setViewStudentId] = useState<string | null>(null);
 
     const { auth } = useAuth()!;
 
@@ -74,6 +78,9 @@ function Students() {
                     formType={formState.formType}
                     student_pfp_path={formState.student_pfp_path}
                 />
+            </Modal>
+            <Modal open={viewIsOpen} onClose={() => setViewIsOpen(false)}>
+                <ViewStudent student_id={viewStudentId} />
             </Modal>
             <ConfirmPopup
                 open={confirmIsOpen}
@@ -191,6 +198,16 @@ function Students() {
                                                         marginLeft: "auto",
                                                     }}
                                                 >
+                                                    <button
+                                                        onClick={() => {
+                                                            setViewStudentId(
+                                                                s.id
+                                                            );
+                                                            setViewIsOpen(true);
+                                                        }}
+                                                    >
+                                                        view
+                                                    </button>
                                                     <button
                                                         className="buttonIcon"
                                                         onClick={async () => {

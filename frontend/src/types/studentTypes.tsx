@@ -1,3 +1,6 @@
+import type { College } from "./collegeTypes";
+import type { Program } from "./programTypes";
+
 export interface Student {
     id: string;
     first_name: string;
@@ -6,6 +9,11 @@ export interface Student {
     gender: string;
     program_code: string;
     student_pfp_path: string | null;
+}
+
+export interface StudentViewType extends Student {
+    program: Program | null;
+    college: College | null;
 }
 
 export interface AddStudentFormData {

@@ -16,6 +16,16 @@ async function fetchStudents(
     });
 }
 
+async function fetchViewStudent(student_id: string, csrftoken: string | null) {
+    return await fetch(url + "/student/" + student_id, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "X-CSRFToken": csrftoken ? csrftoken : "",
+        },
+    });
+}
+
 async function fetchAddStudent(
     addStudentFormData: AddStudentFormData,
     csrftoken: string | null
@@ -89,6 +99,7 @@ async function fetchDeleteStudent(csrftoken: string | null, targetId: string) {
 
 export default {
     fetchStudents,
+    fetchViewStudent,
     fetchAddStudent,
     fetchEditStudent,
     fetchDeleteStudent,

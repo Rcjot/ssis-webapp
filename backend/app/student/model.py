@@ -41,6 +41,53 @@ class Students() :
         cursor.execute(sql, (student_pfp_path, student_uuid))
         db.commit()
         cursor.close()
+    
+    @classmethod 
+    def view_student(cls, student_id) :
+        try : 
+            db = get_db()
+            cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            sql  = """
+                    SELECT 
+                        id,
+                        first_name,
+                        last_name,
+                        year_level,
+                        gender,
+                        program_code,
+                        student_pfp_path,
+                        CASE
+                            WHEN program_code IS NULL THEN NULL
+                            ELSE 
+                                JSON_BUILD_OBJECT (
+                                    'code', p.code,
+                                    'name', p.name,
+                                    'college_code', p.college_code
+                                ) 
+                        END AS program,    
+                        CASE
+                            WHEN p.college_code IS NULL THEN NULL
+                            ELSE                         
+                                JSON_BUILD_OBJECT (
+                                    'code', c.code,
+                                    'name', c.name
+                                ) 
+                        END AS college
+                    FROM students s
+                    LEFT JOIN programs p
+                        ON p.code = s.program_code
+                    LEFT JOIN colleges c
+                        ON c.code = p.college_code
+                    WHERE id = %s
+                    """
+
+            cursor.execute(sql, (student_id,))
+            result = cursor.fetchone()
+            cursor.close()
+
+            return result
+        except Exception as e:
+            print(f"error viewing student: {e}")
 
 
     @classmethod

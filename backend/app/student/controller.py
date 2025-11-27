@@ -35,6 +35,13 @@ def get_students() :
                    total_pages=total_pages,
                    students=Students.all(limit, offset, search, sortBy, direction))
 
+@student_bp.route("/<student_id>") 
+@login_required
+def get_student(student_id) :
+    student = Students.view_student(student_id)
+
+    return jsonify(success=True,student=student)
+
 @student_bp.route("/add", methods=["POST"])
 @login_required
 def add_student() :
