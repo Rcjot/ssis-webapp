@@ -58,14 +58,18 @@ class Programs() :
                                 'code', c.code,
                                 'name', c.name
                             ) 
-                    END AS college
+                    END AS college,
+                    (
+                        SELECT COUNT(*) FROM students s
+                        WHERE s.program_code = %s
+                    ) AS student_count
                 FROM programs p
                 LEFT JOIN colleges c
                     ON c.code = p.college_code
                 WHERE p.code = %s
                 """
 
-        cursor.execute(sql, (program_code,))
+        cursor.execute(sql, (program_code, program_code,))
         result = cursor.fetchone()
         cursor.close()
 
