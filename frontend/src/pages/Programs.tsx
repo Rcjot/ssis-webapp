@@ -13,6 +13,7 @@ import ConfirmPopup from "../components/modals/ConfirmPopup";
 import deleteIcon from "../assets/delete.svg";
 import editIcon from "../assets/edit.svg";
 import { toast } from "react-toastify";
+import ViewProgram from "../components/modals/ViewProgram";
 
 function Programs() {
     const [programs, setPrograms] = useState<Program[] | null>(null);
@@ -25,6 +26,7 @@ function Programs() {
         },
     });
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [viewIsOpen, setViewIsOpen] = useState<boolean>(false);
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const [targetDelete, setTargetDelete] = useState<string | null>(null);
 
@@ -37,6 +39,7 @@ function Programs() {
         pageNumber: 1,
         limit: 10,
     });
+    const [viewProgramCode, setViewProgramCode] = useState<string | null>(null);
 
     const { auth } = useAuth()!;
     const fetchPrograms = useCallback(async () => {
@@ -63,6 +66,9 @@ function Programs() {
                     formDataOriginal={formState.formData}
                     formType={formState.formType}
                 />
+            </Modal>
+            <Modal open={viewIsOpen} onClose={() => setViewIsOpen(false)}>
+                <ViewProgram program_code={viewProgramCode} />
             </Modal>
             <ConfirmPopup
                 open={confirmIsOpen}
@@ -149,6 +155,16 @@ function Programs() {
                                                         marginLeft: "auto",
                                                     }}
                                                 >
+                                                    <button
+                                                        onClick={() => {
+                                                            setViewProgramCode(
+                                                                p.code
+                                                            );
+                                                            setViewIsOpen(true);
+                                                        }}
+                                                    >
+                                                        view
+                                                    </button>
                                                     <button
                                                         className="buttonIcon"
                                                         onClick={async () => {

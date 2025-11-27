@@ -43,6 +43,35 @@ class Programs() :
         return result
     
     @classmethod 
+    def view_program(cls, program_code) :
+        db = get_db()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        sql  = """
+                SELECT 
+                    p.code,
+                    p.name,
+                    p.college_code, 
+                    CASE
+                        WHEN p.college_code IS NULL THEN NULL
+                        ELSE                         
+                            JSON_BUILD_OBJECT (
+                                'code', c.code,
+                                'name', c.name
+                            ) 
+                    END AS college
+                FROM programs p
+                LEFT JOIN colleges c
+                    ON c.code = p.college_code
+                WHERE p.code = %s
+                """
+
+        cursor.execute(sql, (program_code,))
+        result = cursor.fetchone()
+        cursor.close()
+
+        return result        
+
+    @classmethod 
     def all_codes(cls) :
         db = get_db()
         cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)

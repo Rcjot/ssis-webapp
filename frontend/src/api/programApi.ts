@@ -17,6 +17,19 @@ async function fetchPrograms(
     });
 }
 
+async function fetchViewProgram(
+    program_code: string,
+    csrftoken: string | null
+) {
+    return await fetch(url + "/program/" + program_code, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "X-CSRFToken": csrftoken ? csrftoken : "",
+        },
+    });
+}
+
 async function fetchProgramCodes(csrftoken: string | null) {
     return await fetch(url + "/program/codes", {
         method: "GET",
@@ -82,6 +95,7 @@ async function fetchDeleteProgram(
 
 export default {
     fetchPrograms,
+    fetchViewProgram,
     fetchProgramCodes,
     fetchAddProgram,
     fetchEditProgram,

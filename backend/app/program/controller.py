@@ -33,6 +33,14 @@ def get_programs() :
                    total_pages=total_pages,
                    programs=Programs.all(limit, offset, search, sortBy, direction))
 
+@program_bp.route("/<program_code>") 
+@login_required
+def get_student(program_code) :
+    program = Programs.view_program(program_code)
+
+    return jsonify(success=True,program=program)
+
+
 @program_bp.route("/codes")
 @login_required
 def get_program_codes() :
