@@ -34,6 +34,13 @@ def get_colleges() :
                    total_pages=total_pages,
                    colleges=Colleges.all(limit, offset, search, sortBy, direction))
 
+@college_bp.route("/<college_code>") 
+@login_required
+def get_student(college_code) :
+    college = Colleges.view_college(college_code)
+
+    return jsonify(success=True,college=college)
+
 @college_bp.route("/codes")
 @login_required
 def get_program_codes() :

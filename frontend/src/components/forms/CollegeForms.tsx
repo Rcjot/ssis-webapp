@@ -49,7 +49,6 @@ function CollegeForm({
             name: [],
             general: [],
         });
-        console.log(auth.csrftoken);
         let res;
         if (formType == "add") {
             res = await collegeApi.fetchAddCollege(formData, auth.csrftoken);

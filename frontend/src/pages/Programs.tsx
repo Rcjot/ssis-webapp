@@ -45,7 +45,6 @@ function Programs() {
     const fetchPrograms = useCallback(async () => {
         const res = await programApi.fetchPrograms(queryParams, auth.csrftoken);
         const resjson = await res.json();
-        console.log(resjson.programs);
         setPrograms(resjson.programs);
         setTotalCount(resjson.total_count);
         setMaxPage(Math.max(1, resjson.total_pages));

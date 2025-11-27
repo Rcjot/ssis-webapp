@@ -39,6 +39,42 @@ class Colleges() :
         cursor.close()
 
         return result
+    
+    @classmethod 
+    def view_college(cls, college_code) :
+        db = get_db()
+        cursor = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        sql  = """
+                SELECT 
+                    code,
+                    name,
+                    (
+                        SELECT 
+                            COUNT(*) 
+                            FROM students s
+                            JOIN programs p
+                                ON p.code = s.program_code
+                            JOIN colleges c
+                                ON c.code = p.college_code
+                            WHERE c.code = %s
+                    ) As student_count,
+                    (
+                        SELECT 
+                            COUNT(*) 
+                            FROM programs p
+                            JOIN colleges c
+                                ON c.code = p.college_code
+                            WHERE c.code = %s                    
+                    ) AS program_count
+                FROM colleges c
+                WHERE c.code = %s
+                """
+
+        cursor.execute(sql, (college_code, college_code, college_code,))
+        result = cursor.fetchone()
+        cursor.close()
+
+        return result     
 
     @classmethod
     def get_all_count(cls) :

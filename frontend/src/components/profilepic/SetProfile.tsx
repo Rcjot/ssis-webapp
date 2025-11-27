@@ -31,7 +31,6 @@ function SetProfile({
     // const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
-        console.log(e.target.files);
         if (!e.target.files) return;
         if (e.target.files.length === 0) return;
         const file = e.target.files[0];

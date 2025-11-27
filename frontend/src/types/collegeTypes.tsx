@@ -3,6 +3,11 @@ export interface College {
     name: string;
 }
 
+export interface CollegeViewType extends College {
+    student_count: number;
+    program_count: number;
+}
+
 export interface AddCollegeFormData {
     code: string;
     name: string;

@@ -30,7 +30,6 @@ async function fetchAddStudent(
     addStudentFormData: AddStudentFormData,
     csrftoken: string | null
 ) {
-    console.log(addStudentFormData);
     const formData = new FormData();
     formData.append("id", addStudentFormData.id);
     formData.append("first_name", addStudentFormData.first_name);
@@ -38,14 +37,12 @@ async function fetchAddStudent(
     formData.append("year_level", String(addStudentFormData.year_level));
     formData.append("gender", String(addStudentFormData.gender));
     formData.append("program_code", String(addStudentFormData.program_code));
-    console.log(addStudentFormData.student_pfp_file);
     if (addStudentFormData.student_pfp_file) {
         formData.append(
             "student_pfp_file",
             addStudentFormData.student_pfp_file
         );
     }
-    console.log(formData);
 
     return await fetch(url + "/student/add", {
         method: "POST",
@@ -63,7 +60,6 @@ async function fetchEditStudent(
     targetId: string
 ) {
     // console.log(addStudentFormData);
-    console.log(addStudentFormData);
     const formData = new FormData();
     formData.append("id", addStudentFormData.id);
     formData.append("first_name", addStudentFormData.first_name);

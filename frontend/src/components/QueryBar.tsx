@@ -13,7 +13,6 @@ function QueryBar({
 }) {
     const [queryFormData, setQueryFormData] =
         useState<QueryParams>(queryParams);
-    console.log(queryParams);
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setQueryParams((prev) => ({

@@ -4,7 +4,7 @@ import styles from "../forms/Forms.module.css";
 import type { ProgramViewType } from "../../types/programTypes";
 import programApi from "../../api/programApi";
 
-function ViewStudent({ program_code }: { program_code: string | null }) {
+function ViewProgram({ program_code }: { program_code: string | null }) {
     const { auth } = useAuth()!;
     const [programDetails, setProgramDetails] =
         useState<ProgramViewType | null>(null);
@@ -17,7 +17,6 @@ function ViewStudent({ program_code }: { program_code: string | null }) {
                 auth.csrftoken
             );
             const resjson = await res.json();
-            console.log(resjson["program"]);
 
             setProgramDetails(resjson["program"]);
         };
@@ -46,8 +45,12 @@ function ViewStudent({ program_code }: { program_code: string | null }) {
                     {programDetails.college ? programDetails.college.name : "-"}
                 </div>
             </div>
+            <div>
+                <label htmlFor="college_code">students count</label>
+                <div>{programDetails.student_count}</div>
+            </div>
         </div>
     );
 }
 
-export default ViewStudent;
+export default ViewProgram;

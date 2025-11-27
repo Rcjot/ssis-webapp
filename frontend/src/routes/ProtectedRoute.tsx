@@ -3,7 +3,6 @@ import { Outlet, Navigate, useLocation } from "react-router-dom";
 
 function ProtectedRoute() {
     const { auth } = useAuth()!;
-    console.log("protected");
     const location = useLocation();
     console.log(location.pathname);
     if (auth.status === "loading") return <div>loading..</div>;

@@ -17,6 +17,19 @@ async function fetchColleges(
     });
 }
 
+async function fetchViewCollege(
+    college_code: string,
+    csrftoken: string | null
+) {
+    return await fetch(url + "/college/" + college_code, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "X-CSRFToken": csrftoken ? csrftoken : "",
+        },
+    });
+}
+
 async function fetchCollegeCodes(csrftoken: string | null) {
     return await fetch(url + "/college/codes", {
         method: "GET",
@@ -80,6 +93,7 @@ async function fetchDeleteCollege(
 
 export default {
     fetchColleges,
+    fetchViewCollege,
     fetchCollegeCodes,
     fetchAddCollege,
     fetchEditCollege,

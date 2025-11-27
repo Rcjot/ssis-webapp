@@ -31,7 +31,6 @@ function StudentForm({
     const { auth } = useAuth()!;
 
     useEffect(() => {
-        console.log("original", formDataOriginal);
         setFormData(formDataOriginal);
     }, [formDataOriginal]);
 
@@ -39,7 +38,6 @@ function StudentForm({
         const fetchPrograms = async () => {
             const res = await programApi.fetchProgramCodes(auth.csrftoken);
             const resjson = await res.json();
-            console.log(resjson);
             setProgramOptions(
                 resjson.codes.map((program: { code: string }) => program.code)
             );
@@ -89,7 +87,6 @@ function StudentForm({
         const newFormData = formData;
 
         setIsSubmitting(true);
-        console.log(canvasRef);
         if (canvasRef.current) {
             canvasRef.current.toBlob(
                 async (blob) => {
@@ -113,7 +110,6 @@ function StudentForm({
                             );
                         }
                         const resjson = await res.json();
-                        console.log(resjson);
                         if (res.status == 419) {
                             setFormDataErrors({
                                 id: [],
@@ -144,7 +140,6 @@ function StudentForm({
                 0.9
             );
         } else {
-            console.log(newFormData);
             if (formType == "add") {
                 res = await studentApi.fetchAddStudent(
                     newFormData,
@@ -158,7 +153,6 @@ function StudentForm({
                 );
             }
             const resjson = await res.json();
-            console.log(resjson);
             if (res.status == 419) {
                 setFormDataErrors({
                     id: [],

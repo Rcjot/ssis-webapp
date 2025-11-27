@@ -47,7 +47,6 @@ function Signup() {
 
         const res = await authApi.fetchSignup(formData, auth.csrftoken);
         const resjson = await res.json();
-        console.log(resjson);
         if (res.status == 419) {
             setFormDataErrors({
                 username: [],

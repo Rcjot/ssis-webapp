@@ -34,7 +34,6 @@ function ProgramForm({
             setCollegeOptions(
                 resjson.codes.map((college: { code: string }) => college.code)
             );
-            console.log(resjson);
         };
         fetchColleges();
     }, [auth.csrftoken]);
@@ -92,7 +91,6 @@ function ProgramForm({
             return;
         }
         const resjson = await res.json();
-        console.log(resjson);
         if (!res.ok) {
             setFormDataErrors({ ...resjson.error, general: [] });
         } else {

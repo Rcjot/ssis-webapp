@@ -53,10 +53,8 @@ function Students() {
     const { auth } = useAuth()!;
 
     const fetchStudents = useCallback(async () => {
-        console.log("called");
         const res = await studentApi.fetchStudents(queryParams, auth.csrftoken);
         const resjson = await res.json();
-        console.log(resjson);
         setStudents(resjson.students);
         setTotalCount(resjson.total_count);
         setMaxPage(Math.max(1, resjson.total_pages));

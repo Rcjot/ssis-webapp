@@ -28,7 +28,6 @@ function PageNav({
     }
 
     useEffect(() => {
-        console.log(pageNumber);
         setInputPageNumber(pageNumber.toString());
     }, [pageNumber]);
 
@@ -42,7 +41,6 @@ function PageNav({
             pageNumber = 1;
         }
         setInputPageNumber(pageNumber.toString());
-        console.log(pageNumber);
 
         setQueryParams((prev) => ({
             ...prev,

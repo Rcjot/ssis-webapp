@@ -21,7 +21,6 @@ function ViewStudent({ student_id }: { student_id: string | null }) {
                 auth.csrftoken
             );
             const resjson = await res.json();
-            console.log(resjson["student"]);
 
             setStudentDetails(resjson["student"]);
         };

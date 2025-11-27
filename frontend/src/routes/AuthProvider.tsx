@@ -29,7 +29,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         fetchCredentials();
-        console.log("fetched creds");
     }, [fetchCredentials]);
 
     const login = useCallback(
@@ -41,7 +40,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         ) => {
             const res = await authApi.fetchLogin(loginFormData, auth.csrftoken);
             const resjson = await res.json();
-            console.log(res.status, res.ok);
             if (res.status == 419) {
                 setFormDataErrors({
                     username: "",

@@ -8,6 +8,7 @@ export interface Program {
 
 export interface ProgramViewType extends Program {
     college: College;
+    student_count: number;
 }
 
 export interface AddProgramFormData {
